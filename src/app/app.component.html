@@ -31,7 +31,7 @@ Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
            *ngFor="let rowInColumn of column.columnRows; let k = index"
            [cdkDropListConnectedTo]=" getAllListsConnections()"
            [cdkDropListData]="rowInColumn.data"
-           [id]="generateId(i, j, k)"
+           [id]="rowInColumn.id"
            cdkDropList
            class="row-in-column">
         {{rowInColumn.id}}
