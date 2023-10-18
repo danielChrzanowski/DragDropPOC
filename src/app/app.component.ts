@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -6,23 +6,34 @@ import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   components: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
 
-  boxWidth: number = 600;
-  boxHeight: number = 200;
-
-  rows: Row[] = [{
-    columns: [{
-      columnRows: [{
-        id: this.generateId(0, 0, 0),
-        data: []
+  box: Box = {
+    width: 600,
+    height: 300,
+    rows: [{
+      columns: [{
+        columnRows: [{
+          id: this.generateId(0, 0, 0),
+          data: []
+        }]
       }]
     }]
-  }];
+  }
 
   protected readonly Number: NumberConstructor = Number;
+
+  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
+  }
+
+  ngOnInit(): void {
+    this.renderer2.setProperty(this.elementRef.nativeElement,
+      'style',
+      `--box-width: ${this.box.width}px; --box-height: ${this.box.height}px;`
+    );
+  }
 
   onBoxCellItemDrop(event: CdkDragDrop<string[]>): void {
     if (event.container.data.length < 1) {
@@ -46,7 +57,7 @@ export class AppComponent {
 
   getAllListsConnections(): string[] {
     const allColumnsIds: string[] = [];
-    this.rows.forEach((row: Row) =>
+    this.box.rows.forEach((row: Row) =>
       row.columns.forEach((column: Column) =>
         column.columnRows.forEach((columnRow: ColumnRow) => allColumnsIds.push(columnRow.id)))
     );
@@ -54,7 +65,7 @@ export class AppComponent {
   }
 
   addRow(rowIndex: number): void {
-    this.rows.splice(rowIndex, 0, {
+    this.box.rows.splice(rowIndex, 0, {
       columns: [{
         columnRows: [{id: this.generateId(0, 0, 0), data: []}]
       }]
@@ -63,7 +74,7 @@ export class AppComponent {
   }
 
   addColumnInRow(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
-    this.rows[rowIndex]?.columns.splice(columnIndex, 0, {
+    this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
       columnRows: [{
         id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
         data: []
@@ -73,42 +84,36 @@ export class AppComponent {
   }
 
   addRowInColumn(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
-    this.rows[rowIndex]?.columns[columnIndex].columnRows.splice(rowInColumnIndex, 0, {
+    this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(rowInColumnIndex, 0, {
       id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
       data: []
     });
     this.regenerateAllIds();
   }
 
-  getRowHeight(rowsCount: number): string {
-    return `height: ${this.boxHeight / rowsCount}px;`;
-  }
-
-  getColumnWidth(columnsInRowCount: number): string {
-    return `width: ${this.boxWidth / columnsInRowCount}px;`;
-  }
-
-  getRowInColumnHeight(rowsInColumnCount: number, columnId: string): string {
-    const columnHeight: number | undefined = document.getElementById(columnId)?.offsetHeight;
-    return columnHeight ? `height: ${columnHeight / rowsInColumnCount}px;` : '';
-  }
-
   generateId(row: number, column: number, columnRow: number): string {
     return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
+  printStructureToConsole(): void {
+    console.log(this.box)
+  }
+
   private regenerateAllIds(): void {
-    for (let i: number = 0; i < this.rows.length; i += 1) {
-      for (let j: number = 0; j < this.rows[i].columns.length; j += 1) {
-        for (let k: number = 0; k < this.rows[i].columns[j].columnRows.length; k += 1) {
-          this.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k);
+    for (let i: number = 0; i < this.box.rows.length; i += 1) {
+      for (let j: number = 0; j < this.box.rows[i].columns.length; j += 1) {
+        for (let k: number = 0; k < this.box.rows[i].columns[j].columnRows.length; k += 1) {
+          this.box.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k);
         }
       }
     }
-    console.log(this.rows);
   }
+}
 
-
+interface Box {
+  width: number;
+  height: number;
+  rows: Row[];
 }
 
 interface Row {

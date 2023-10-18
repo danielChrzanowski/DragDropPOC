@@ -11,12 +11,10 @@
 </div>
 
 <br/><br/><br/>
-Row index:<input #rowIndex type="number" value="0"/>
-<br/>
-Column index:<input #columnIndex type="number" value="0"/>
-<br/>
-Row in column index:<input #rowInColumnIndex type="number" value="0"/>
-<br/>
+<button (click)="printStructureToConsole()">Print structure to console</button><br/>
+Row index: <input #rowIndex type="number" value="0"/><br/>
+Column index: <input #columnIndex type="number" value="0"/><br/>
+Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
 <button (click)="addRow(Number(rowIndex.value))">Add row</button>
 <button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(rowInColumnIndex.value))">
   Add column in row
@@ -26,21 +24,19 @@ Row in column index:<input #rowInColumnIndex type="number" value="0"/>
 </button>
 <br/><br/>
 
-<div *ngFor="let row of rows; let i = index">
-  <div *ngFor="let column of row.columns; let j = index"
-       [id]="'column-' + j"
-       [style]="getRowHeight(rows.length) + getColumnWidth(row.columns.length)"
-       class="column">
-    <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-         *ngFor="let rowInColumn of column.columnRows; let k = index"
-         [cdkDropListConnectedTo]=" getAllListsConnections()"
-         [cdkDropListData]="rowInColumn.data"
-         [id]="generateId(i, j, k)"
-         [style]="getRowInColumnHeight(column.columnRows.length, 'column-' + j)"
-         cdkDropList
-         class="items-list">
-      {{rowInColumn.id}}
-      <div *ngFor="let data of rowInColumn.data" cdkDrag class="component">{{data}}</div>
+<div class="box">
+  <div *ngFor="let row of box.rows; let i = index" class="row">
+    <div *ngFor="let column of row.columns; let j = index" [id]="'column-' + j" class="column">
+      <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
+           *ngFor="let rowInColumn of column.columnRows; let k = index"
+           [cdkDropListConnectedTo]=" getAllListsConnections()"
+           [cdkDropListData]="rowInColumn.data"
+           [id]="generateId(i, j, k)"
+           cdkDropList
+           class="row-in-column">
+        {{rowInColumn.id}}
+        <div *ngFor="let data of rowInColumn.data" cdkDrag class="component">{{data}}</div>
+      </div>
     </div>
   </div>
 </div>
