@@ -10,20 +10,21 @@ export class AppComponent {
   componentsListId: string = 'components-list';
   components: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
 
+  boxWidth: number = 600;
+  boxHeight: number = 200;
+
   rows: Row[] = [{
     columns: [{
-      id: this.generateId(0, 0),
       columnRows: [{
-        id: this.generateId(0, 0, "0"),
+        id: this.generateId(0, 0, 0),
         data: []
       }]
     }]
   }];
 
-  boxWidth: number = 600;
-  boxHeight: number = 200;
+  protected readonly Number: NumberConstructor = Number;
 
-  onListDropped(event: CdkDragDrop<string[]>): void {
+  onBoxCellItemDrop(event: CdkDragDrop<string[]>): void {
     if (event.container.data.length < 1) {
       if (event.previousContainer.id === this.componentsListId) {
         copyArrayItem(
@@ -46,81 +47,68 @@ export class AppComponent {
   getAllListsConnections(): string[] {
     const allColumnsIds: string[] = [];
     this.rows.forEach((row: Row) =>
-      row.columns.forEach((column: Column) => allColumnsIds.push(column.id))
+      row.columns.forEach((column: Column) =>
+        column.columnRows.forEach((columnRow: ColumnRow) => allColumnsIds.push(columnRow.id)))
     );
     return [this.componentsListId, ...allColumnsIds];
   }
 
-  addRow(rowIndexString: string): void {
-    const rowIndex: number = Number(rowIndexString);
-
+  addRow(rowIndex: number): void {
     this.rows.splice(rowIndex, 0, {
       columns: [{
-        id: this.generateId(rowIndex, 0),
-        columnRows: [{id: this.generateId(0, 0, '0'), data: []}]
+        columnRows: [{id: this.generateId(0, 0, 0), data: []}]
       }]
     });
-
     this.regenerateAllIds();
   }
 
-  addColumnInRow(rowIndexString: string, columnIndexString: string, rowInColumnString: string): void {
-    const rowIndex: number = Number(rowIndexString);
-    const columnIndex: number = Number(columnIndexString);
-    const rowInColumnIndex: number = Number(rowInColumnString);
-
+  addColumnInRow(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
     this.rows[rowIndex]?.columns.splice(columnIndex, 0, {
-      id: this.generateId(rowIndex, columnIndex),
       columnRows: [{
-        id: this.generateId(rowIndex, columnIndex, rowInColumnIndex.toString()),
+        id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
         data: []
       }]
     });
-
     this.regenerateAllIds();
   }
 
-  addRowInColumn(rowIndexString: string, columnIndexString: string, rowInColumnString: string): void {
-    const rowIndex: number = Number(rowIndexString);
-    const columnIndex: number = Number(columnIndexString);
-    const rowInColumnIndex: number = Number(rowInColumnString);
-
+  addRowInColumn(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
     this.rows[rowIndex]?.columns[columnIndex].columnRows.splice(rowInColumnIndex, 0, {
-      id: this.generateId(rowIndex, columnIndex, rowInColumnIndex.toString()),
+      id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
       data: []
     });
-
     this.regenerateAllIds();
   }
 
   getRowHeight(rowsCount: number): string {
-    return `height: ${this.boxHeight / rowsCount}px`;
+    return `height: ${this.boxHeight / rowsCount}px;`;
   }
 
-  getRowInColumnHeight(rowsCount: number): string {
-    return `height: ${this.boxHeight / rowsCount}px`;
+  getColumnWidth(columnsInRowCount: number): string {
+    return `width: ${this.boxWidth / columnsInRowCount}px;`;
   }
 
-  getColumnWidth(columnsCount: number): string {
-    return `width: ${this.boxWidth / columnsCount}px`;
+  getRowInColumnHeight(rowsInColumnCount: number, columnId: string): string {
+    const columnHeight: number | undefined = document.getElementById(columnId)?.offsetHeight;
+    return columnHeight ? `height: ${columnHeight / rowsInColumnCount}px;` : '';
   }
 
-  generateId(row: number, column: number, columnRow?: string): string {
-    let id = `row-${row}-column-${column}`;
-    return columnRow ? `${id}-columnRow-${columnRow}` : id;
+  generateId(row: number, column: number, columnRow: number): string {
+    return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
   private regenerateAllIds(): void {
     for (let i: number = 0; i < this.rows.length; i += 1) {
       for (let j: number = 0; j < this.rows[i].columns.length; j += 1) {
         for (let k: number = 0; k < this.rows[i].columns[j].columnRows.length; k += 1) {
-          this.rows[i].columns[j].id = this.generateId(i, j);
-          this.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k.toString());
+          this.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k);
         }
       }
     }
     console.log(this.rows);
   }
+
+
 }
 
 interface Row {
@@ -128,7 +116,6 @@ interface Row {
 }
 
 interface Column {
-  id: string;
   columnRows: ColumnRow[];
 }
 
