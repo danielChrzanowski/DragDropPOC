@@ -14,8 +14,11 @@ export class AppComponent implements OnInit {
     width: 600,
     height: 300,
     rows: [{
+      height: undefined,
       columns: [{
+        width: undefined,
         columnRows: [{
+          height: undefined,
           id: this.generateId(0, 0, 0),
           data: []
         }]
@@ -66,8 +69,10 @@ export class AppComponent implements OnInit {
 
   addRow(rowIndex: number): void {
     this.box.rows.splice(rowIndex, 0, {
+      height: undefined,
       columns: [{
-        columnRows: [{id: this.generateId(0, 0, 0), data: []}]
+        width: undefined,
+        columnRows: [{height: undefined, id: this.generateId(0, 0, 0), data: []}]
       }]
     });
     this.regenerateAllIds();
@@ -75,7 +80,9 @@ export class AppComponent implements OnInit {
 
   addColumnInRow(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
+      width: undefined,
       columnRows: [{
+        height: undefined,
         id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
         data: []
       }]
@@ -85,6 +92,7 @@ export class AppComponent implements OnInit {
 
   addRowInColumn(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(rowInColumnIndex, 0, {
+      height: undefined,
       id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
       data: []
     });
@@ -95,8 +103,8 @@ export class AppComponent implements OnInit {
     return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
-  printStructureToConsole(): void {
-    console.log(this.box)
+  printObjectToConsole(): void {
+    console.log("BOX:", this.box)
   }
 
   private regenerateAllIds(): void {
@@ -111,20 +119,23 @@ export class AppComponent implements OnInit {
 }
 
 interface Box {
-  width: number;
-  height: number;
+  width: number | undefined;
+  height: number | undefined;
   rows: Row[];
 }
 
 interface Row {
+  height: number | undefined;
   columns: Column[];
 }
 
 interface Column {
+  width: number | undefined;
   columnRows: ColumnRow[];
 }
 
 interface ColumnRow {
+  height: number | undefined;
   id: string;
   data: string[];
 }

@@ -10,8 +10,8 @@
   </div>
 </div>
 
-<br/><br/><br/>
-<button (click)="printStructureToConsole()">Print structure to console</button><br/>
+<br/><br/>
+<button (click)="printObjectToConsole()">PRINT OBJECT TO CONSOLE</button><br/>
 Row index: <input #rowIndex type="number" value="0"/><br/>
 Column index: <input #columnIndex type="number" value="0"/><br/>
 Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
@@ -34,7 +34,6 @@ Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
            [id]="rowInColumn.id"
            cdkDropList
            class="row-in-column">
-        {{rowInColumn.id}}
         <div *ngFor="let data of rowInColumn.data" cdkDrag class="component">{{data}}</div>
       </div>
     </div>
