@@ -1,7 +1,7 @@
 <div class="components-list">
   <h2>{{componentsListId}}</h2>
-  <div (cdkDropListDropped)="drop($event)"
-       [cdkDropListConnectedTo]="getConnections()"
+  <div (cdkDropListDropped)="onListDropped($event)"
+       [cdkDropListConnectedTo]="getAllListsConnections()"
        [cdkDropListData]="components"
        [id]="componentsListId"
        cdkDropList
@@ -15,21 +15,25 @@ Row index:<input #rowIndex type="number" value="0"/>
 <br/>
 Column index:<input #columnIndex type="number" value="0"/>
 <br/>
+Row in column index:<input #rowInColumnIndex type="number" value="0"/>
+<br/>
 <button (click)="addRow(rowIndex.value)">Add row</button>
-<button (click)="addColumn(rowIndex.value, columnIndex.value)">Add column</button>
+<button (click)="addColumnInRow(rowIndex.value, columnIndex.value, rowInColumnIndex.value)">Add column in row</button>
+<button (click)="addRowInColumn(rowIndex.value, columnIndex.value, rowInColumnIndex.value)">Add row in column</button>
 <br/><br/>
 
-<div *ngFor="let row of rows">
-  <div *ngFor="let column of row.columns" [style]="columnWidth(row.columns.length)" class="column">
-    {{column.id}}
-    <div (cdkDropListDropped)="drop($event)"
-         [cdkDropListConnectedTo]=" getConnections()"
-         [cdkDropListData]="column.data"
-         [id]="column.id + '-' + row"
-         cdkDropList
-         class="items-list">
-      <div *ngFor="let data of column.data" cdkDrag class="component">{{data}}</div>
+<div *ngFor="let row of rows; let i = index">
+  <div *ngFor="let column of row.columns; let j = index" [style]="getColumnWidth(row.columns.length)" class="column">
+    <div *ngFor="let rowInColumn of column.columnRows; let k = index">
+      <div (cdkDropListDropped)="onListDropped($event)"
+           [cdkDropListConnectedTo]=" getAllListsConnections()"
+           [cdkDropListData]="rowInColumn.data"
+           [id]="generateId(i, j, k.toString())"
+           [style]="getRowHeight(rows.length)"
+           cdkDropList class="items-list">
+        {{column.id}}
+        <div *ngFor="let data of rowInColumn.data" cdkDrag class="component">{{data}}</div>
+      </div>
     </div>
   </div>
-
 </div>

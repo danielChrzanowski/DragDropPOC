@@ -1,72 +1,138 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { CdkDragDrop, copyArrayItem, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component } from '@angular/core';
+import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  rows: Row[] = [{index: 0, columns: [{id: 'column-0', data: []}]}];
+export class AppComponent {
   componentsListId: string = 'components-list';
-  components: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep', 'Go home2', 'Fall asleep2'];
-  rowWidth: number = 600;
-  columnsIdsPrefix = 'column-';
+  components: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
 
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
-  }
+  rows: Row[] = [{
+    columns: [{
+      id: this.generateId(0, 0),
+      columnRows: [{
+        id: this.generateId(0, 0, "0"),
+        data: []
+      }]
+    }]
+  }];
 
-  ngOnInit(): void {
-  }
+  boxWidth: number = 600;
+  boxHeight: number = 200;
 
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      copyArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+  onListDropped(event: CdkDragDrop<string[]>): void {
+    if (event.container.data.length < 1) {
+      if (event.previousContainer.id === this.componentsListId) {
+        copyArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+      } else {
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+      }
     }
   }
 
-  getConnections(): string[] {
+  getAllListsConnections(): string[] {
     const allColumnsIds: string[] = [];
-    this.rows.forEach(row =>
-      row.columns.forEach(column => allColumnsIds.push(column.id))
+    this.rows.forEach((row: Row) =>
+      row.columns.forEach((column: Column) => allColumnsIds.push(column.id))
     );
     return [this.componentsListId, ...allColumnsIds];
   }
 
-  addRow(rowIndex: string): void {
-    this.rows.push({index: Number(rowIndex), columns: [{id: this.columnsIdsPrefix + '0', data: []}]});
+  addRow(rowIndexString: string): void {
+    const rowIndex: number = Number(rowIndexString);
+
+    this.rows.splice(rowIndex, 0, {
+      columns: [{
+        id: this.generateId(rowIndex, 0),
+        columnRows: [{id: this.generateId(0, 0, '0'), data: []}]
+      }]
+    });
+
+    this.regenerateAllIds();
   }
 
-  addColumn(rowIndexString: string, columnIndexString: string): void {
+  addColumnInRow(rowIndexString: string, columnIndexString: string, rowInColumnString: string): void {
     const rowIndex: number = Number(rowIndexString);
     const columnIndex: number = Number(columnIndexString);
+    const rowInColumnIndex: number = Number(rowInColumnString);
 
-    if (this.rows[rowIndex]) {
-      this.rows[rowIndex].columns.splice(columnIndex, 0, {
-        id: this.columnsIdsPrefix + this.rows[rowIndex].columns.length,
+    this.rows[rowIndex]?.columns.splice(columnIndex, 0, {
+      id: this.generateId(rowIndex, columnIndex),
+      columnRows: [{
+        id: this.generateId(rowIndex, columnIndex, rowInColumnIndex.toString()),
         data: []
-      });
-    }
+      }]
+    });
+
+    this.regenerateAllIds();
   }
 
-  columnWidth(columnsCount: number): string {
-    return `width: ${this.rowWidth / columnsCount}px`;
+  addRowInColumn(rowIndexString: string, columnIndexString: string, rowInColumnString: string): void {
+    const rowIndex: number = Number(rowIndexString);
+    const columnIndex: number = Number(columnIndexString);
+    const rowInColumnIndex: number = Number(rowInColumnString);
+
+    this.rows[rowIndex]?.columns[columnIndex].columnRows.splice(rowInColumnIndex, 0, {
+      id: this.generateId(rowIndex, columnIndex, rowInColumnIndex.toString()),
+      data: []
+    });
+
+    this.regenerateAllIds();
+  }
+
+  getRowHeight(rowsCount: number): string {
+    return `height: ${this.boxHeight / rowsCount}px`;
+  }
+
+  getRowInColumnHeight(rowsCount: number): string {
+    return `height: ${this.boxHeight / rowsCount}px`;
+  }
+
+  getColumnWidth(columnsCount: number): string {
+    return `width: ${this.boxWidth / columnsCount}px`;
+  }
+
+  generateId(row: number, column: number, columnRow?: string): string {
+    let id = `row-${row}-column-${column}`;
+    return columnRow ? `${id}-columnRow-${columnRow}` : id;
+  }
+
+  private regenerateAllIds(): void {
+    for (let i: number = 0; i < this.rows.length; i += 1) {
+      for (let j: number = 0; j < this.rows[i].columns.length; j += 1) {
+        for (let k: number = 0; k < this.rows[i].columns[j].columnRows.length; k += 1) {
+          this.rows[i].columns[j].id = this.generateId(i, j);
+          this.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k.toString());
+        }
+      }
+    }
+    console.log(this.rows);
   }
 }
 
 interface Row {
-  index: number;
   columns: Column[];
 }
 
 interface Column {
+  id: string;
+  columnRows: ColumnRow[];
+}
+
+interface ColumnRow {
   id: string;
   data: string[];
 }
