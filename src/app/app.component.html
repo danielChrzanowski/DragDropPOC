@@ -1,16 +1,19 @@
-<div class="components-list">
-  <h2>{{componentsListId}}</h2>
-  <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-       [cdkDropListConnectedTo]="getAllListsConnections()"
-       [cdkDropListData]="components"
-       [id]="componentsListId"
-       cdkDropList
-       class="items-list">
-    <div *ngFor="let component of components" cdkDrag class="component">{{component}}</div>
+<h3>{{componentsListId}}</h3>
+<div class="components">
+  <div>
+    <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
+         [cdkDropListConnectedTo]="getAllListsConnections()"
+         [cdkDropListData]="components"
+         [id]="componentsListId"
+         cdkDropList
+         class="components-list">
+      <div *ngFor="let component of components" cdkDrag class="component">{{component}}</div>
+    </div>
   </div>
 </div>
+<br/>
 
-<br/><br/>
+<h3>options</h3>
 <button (click)="printObjectToConsole()">PRINT OBJECT TO CONSOLE</button><br/>
 Row index: <input #rowIndex type="number" value="0"/><br/>
 Column index: <input #columnIndex type="number" value="0"/><br/>
@@ -22,13 +25,14 @@ Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
 <button (click)="addRowInColumn(Number(rowIndex.value), Number(columnIndex.value), Number(rowInColumnIndex.value))">
   Add row in column
 </button>
-<br/><br/>
+<br/>
 
+<h3>box</h3>
 <div class="box">
   <div *ngFor="let row of box.rows; let i = index" class="row">
     <div *ngFor="let column of row.columns; let j = index" [id]="'column-' + j" class="column">
       <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-           *ngFor="let rowInColumn of column.columnRows; let k = index"
+           *ngFor="let rowInColumn of column.rowsInColumn; let k = index"
            [cdkDropListConnectedTo]=" getAllListsConnections()"
            [cdkDropListData]="rowInColumn.data"
            [id]="rowInColumn.id"

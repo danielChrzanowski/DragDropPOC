@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
       height: undefined,
       columns: [{
         width: undefined,
-        columnRows: [{
+        rowsInColumn: [{
           height: undefined,
           id: this.generateId(0, 0, 0),
           data: []
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
     const allColumnsIds: string[] = [];
     this.box.rows.forEach((row: Row) =>
       row.columns.forEach((column: Column) =>
-        column.columnRows.forEach((columnRow: ColumnRow) => allColumnsIds.push(columnRow.id)))
+        column.rowsInColumn.forEach((columnRow: ColumnRow) => allColumnsIds.push(columnRow.id)))
     );
     return [this.componentsListId, ...allColumnsIds];
   }
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
       height: undefined,
       columns: [{
         width: undefined,
-        columnRows: [{height: undefined, id: this.generateId(0, 0, 0), data: []}]
+        rowsInColumn: [{height: undefined, id: this.generateId(0, 0, 0), data: []}]
       }]
     });
     this.regenerateAllIds();
@@ -81,7 +81,7 @@ export class AppComponent implements OnInit {
   addColumnInRow(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
       width: undefined,
-      columnRows: [{
+      rowsInColumn: [{
         height: undefined,
         id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
         data: []
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
   }
 
   addRowInColumn(rowIndex: number, columnIndex: number, rowInColumnIndex: number): void {
-    this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(rowInColumnIndex, 0, {
+    this.box.rows[rowIndex]?.columns[columnIndex].rowsInColumn.splice(rowInColumnIndex, 0, {
       height: undefined,
       id: this.generateId(rowIndex, columnIndex, rowInColumnIndex),
       data: []
@@ -99,19 +99,25 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
-  generateId(row: number, column: number, columnRow: number): string {
-    return `row-${row}-column-${column}-columnRow-${columnRow}`;
+  setColumnWidth(rowIndex: number, columnIndex: number, width: number): string {
+    this.box.rows[rowIndex].columns[columnIndex].width = width;
+    return `width: ${width}px`;
   }
 
   printObjectToConsole(): void {
     console.log("BOX:", this.box)
   }
 
+  generateId(row: number, column: number, columnRow: number): string {
+    return `row-${row}-column-${column}-columnRow-${columnRow}`;
+  }
+
+
   private regenerateAllIds(): void {
     for (let i: number = 0; i < this.box.rows.length; i += 1) {
       for (let j: number = 0; j < this.box.rows[i].columns.length; j += 1) {
-        for (let k: number = 0; k < this.box.rows[i].columns[j].columnRows.length; k += 1) {
-          this.box.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k);
+        for (let k: number = 0; k < this.box.rows[i].columns[j].rowsInColumn.length; k += 1) {
+          this.box.rows[i].columns[j].rowsInColumn[k].id = this.generateId(i, j, k);
         }
       }
     }
@@ -131,7 +137,7 @@ interface Row {
 
 interface Column {
   width: number | undefined;
-  columnRows: ColumnRow[];
+  rowsInColumn: ColumnRow[];
 }
 
 interface ColumnRow {
