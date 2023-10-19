@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Box, Column, ColumnRow, Row } from "./models";
 
 @Component({
   selector: 'app-root',
@@ -28,14 +29,11 @@ export class AppComponent implements OnInit {
 
   protected readonly Number: NumberConstructor = Number;
 
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
+  constructor(private renderer2: Renderer2, private elementRef: ElementRef) {
   }
 
   ngOnInit(): void {
-    this.renderer2.setProperty(this.elementRef.nativeElement,
-      'style',
-      `--box-width: ${this.box.width}px; --box-height: ${this.box.height}px;`
-    );
+    this.setBoxSize(this.box.width, this.box.height);
   }
 
   onBoxCellItemDrop(event: CdkDragDrop<string[]>): void {
@@ -90,7 +88,7 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
-  addRowInColumn(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
+  addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
       height: undefined,
       id: this.generateId(rowIndex, columnIndex, columnRowIndex),
@@ -108,6 +106,19 @@ export class AppComponent implements OnInit {
       }
       if (!column.width) rowUndefinedColumnWidthsCount += 1;
     });
+  }
+
+  setRowHeight(rowIndex: number, columnIndex: number, height: number): void {
+
+
+    // let rowUndefinedColumnWidthsCount: number = 0;
+    // this.box.rows[rowIndex].columns.forEach((column: Column) => {
+    //   if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
+    //     this.box.rows[rowIndex].columns[columnIndex].width = width;
+    //     return;
+    //   }
+    //   if (!column.width) rowUndefinedColumnWidthsCount += 1;
+    // });
   }
 
   resetColumnWidths(rowIndex: number): void {
@@ -130,6 +141,15 @@ export class AppComponent implements OnInit {
     return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
+  setBoxSize(boxWidth: number | undefined, boxHeight: number | undefined): void {
+    this.box.width = boxWidth;
+    this.box.height = boxHeight;
+    this.renderer2.setProperty(this.elementRef.nativeElement,
+      'style',
+      `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`
+    );
+  }
+
   private regenerateAllIds(): void {
     for (let i: number = 0; i < this.box.rows.length; i += 1) {
       for (let j: number = 0; j < this.box.rows[i].columns.length; j += 1) {
@@ -139,26 +159,4 @@ export class AppComponent implements OnInit {
       }
     }
   }
-}
-
-interface Box {
-  width: number | undefined;
-  height: number | undefined;
-  rows: Row[];
-}
-
-interface Row {
-  height: number | undefined;
-  columns: Column[];
-}
-
-interface Column {
-  width: number | undefined;
-  columnRows: ColumnRow[];
-}
-
-interface ColumnRow {
-  height: number | undefined;
-  id: string;
-  data: string[];
 }
