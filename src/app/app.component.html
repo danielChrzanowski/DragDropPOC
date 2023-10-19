@@ -41,7 +41,7 @@ Row height: <input #rowHeight type="number" value="0"/>px<br/>
          [style]="getColumnWidthAsStyle(i, j)"
          class="column">
       <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-           *ngFor="let rowInColumn of column.rowsInColumn; let k = index"
+           *ngFor="let rowInColumn of column.columnRows; let k = index"
            [cdkDropListConnectedTo]=" getAllListsConnections()"
            [cdkDropListData]="rowInColumn.data"
            [id]="rowInColumn.id"
