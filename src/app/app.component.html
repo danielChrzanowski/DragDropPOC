@@ -30,6 +30,7 @@ Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
 <br/><br/>
 
 <b>Zmiana wymiarów komórki:</b><br/>
+<button (click)="resetRowsHeights(Number(rowIndex.value))">Reset rows heights</button>
 <button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
 <button (click)="resetColumnRowsHeights(Number(rowIndex.value), Number(columnIndex.value))">
   Reset column rows heights
@@ -37,6 +38,9 @@ Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
 <br/>
 Column width: <input #columnWidth type="number" value="30"/>px<br/>
 Row height: <input #rowHeight type="number" value="30"/>px<br/>
+<button (click)="setRowHeight(Number(rowIndex.value), Number(rowHeight.value))">
+  Set row height
+</button>
 <button (click)="setRowColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
   Set row column width
 </button>
@@ -64,7 +68,7 @@ Row height: <input #rowHeight type="number" value="30"/>px<br/>
 <!--________________BOX________________-->
 <h3>box</h3>
 <div class="box">
-  <div *ngFor="let row of box.rows; let i = index" class="row">
+  <div *ngFor="let row of box.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
     <div *ngFor="let column of row.columns; let j = index"
          [id]="'column-' + j"
          [style]="getColumnWidthAsStyle(i, j)"
@@ -74,7 +78,7 @@ Row height: <input #rowHeight type="number" value="30"/>px<br/>
            [cdkDropListConnectedTo]=" getAllListsConnections()"
            [cdkDropListData]="rowInColumn.components"
            [id]="rowInColumn.id"
-           [style]="getRowHeightAsStyle(i, j, k)"
+           [style]="getColumnRowHeightAsStyle(i, j, k)"
            cdkDropList
            class="row-in-column">
         <div *ngFor="let data of rowInColumn.components" cdkDrag class="component">{{data.componentName}}</div>

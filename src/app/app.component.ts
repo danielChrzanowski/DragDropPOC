@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
     }]
   }
 
+// TODO cleaning tego komponentu
+
   protected readonly Number: NumberConstructor = Number;
 
   constructor(private renderer2: Renderer2, private elementRef: ElementRef) {
@@ -102,6 +104,17 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
+  setRowHeight(rowIndex: number, height: number): void {
+    let rowUndefinedHeightsCount: number = 0;
+    this.box.rows.forEach((row: Row) => {
+      if (rowUndefinedHeightsCount >= 1 || this.box.rows[rowIndex].height) {
+        this.box.rows[rowIndex].height = height;
+        return;
+      }
+      if (!row.height) rowUndefinedHeightsCount += 1;
+    });
+  }
+
   setRowColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
     let rowUndefinedColumnWidthsCount: number = 0;
     this.box.rows[rowIndex].columns.forEach((column: Column) => {
@@ -124,12 +137,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  getRowHeightAsStyle(rowIndex: number): string {
+    return this.box.rows[rowIndex].height ?
+      `flex: 0 0 ${this.box.rows[rowIndex].height}px;` : '';
+  }
+
   getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
     return this.box.rows[rowIndex].columns[columnIndex].width ?
       `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
   }
 
-  getRowHeightAsStyle(rowIndex: number, columnIndex: number, columnRowIndex: number): string {
+  getColumnRowHeightAsStyle(rowIndex: number, columnIndex: number, columnRowIndex: number): string {
     return this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height ?
       `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height}px;` : '';
   }
@@ -140,6 +158,15 @@ export class AppComponent implements OnInit {
       updatedColumn.width = undefined;
       return updatedColumn;
     })
+  }
+
+  resetRowsHeights(rowIndex: number): void {
+    this.box.rows =
+      this.box.rows.map((row: Row) => {
+        let updatedRow: Row = row;
+        updatedRow.height = undefined;
+        return updatedRow;
+      })
   }
 
   resetColumnRowsHeights(rowIndex: number, columnIndex: number): void {
