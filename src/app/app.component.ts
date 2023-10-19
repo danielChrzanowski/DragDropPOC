@@ -109,16 +109,24 @@ export class AppComponent implements OnInit {
   }
 
   setRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
-//TODO
+//TODO paddingi jak beda?
+    this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height = height;
+    // let rowUndefinedColumnWidthsCount: number = 0;
+    // this.box.rows[rowIndex].columns.forEach((column: Column) => {
+    //   if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
+    //     this.box.rows[rowIndex].columns[columnIndex].width = height;
+    //     return;
+    //   }
+    //   if (!column.width) rowUndefinedColumnWidthsCount += 1;
+    // });
+  }
 
-    let rowUndefinedColumnWidthsCount: number = 0;
-    this.box.rows[rowIndex].columns.forEach((column: Column) => {
-      if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
-        this.box.rows[rowIndex].columns[columnIndex].width = height;
-        return;
-      }
-      if (!column.width) rowUndefinedColumnWidthsCount += 1;
-    });
+  getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
+    return this.box.rows[rowIndex].columns[columnIndex].width ? `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
+  }
+
+  getRowHeightAsStyle(rowIndex: number, columnIndex: number, columnRowIndex: number): string {
+    return this.box.rows[rowIndex].columns[columnIndex].width ? `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
   }
 
   resetColumnWidths(rowIndex: number): void {
@@ -129,16 +137,8 @@ export class AppComponent implements OnInit {
     })
   }
 
-  getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
-    return this.box.rows[rowIndex].columns[columnIndex].width ? `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
-  }
-
-  printObjectToConsole(): void {
+  printBoxObjectToConsole(): void {
     console.log("BOX:", this.box);
-  }
-
-  generateId(row: number, column: number, columnRow: number): string {
-    return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
   setBoxSize(boxWidth: number | undefined, boxHeight: number | undefined): void {
@@ -148,6 +148,10 @@ export class AppComponent implements OnInit {
       'style',
       `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`
     );
+  }
+
+  generateId(row: number, column: number, columnRow: number): string {
+    return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
   private regenerateAllIds(): void {

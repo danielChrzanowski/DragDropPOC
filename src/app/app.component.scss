@@ -6,6 +6,7 @@ $boxHeight: var(--box-height);
   flex-direction: column;
   width: $boxWidth;
   height: $boxHeight;
+  background: #edeff1;
 
   .row {
     display: flex;
@@ -81,4 +82,10 @@ $boxHeight: var(--box-height);
 
 .components-list.cdk-drop-list-dragging .component:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+//Additional styles
+.print-obj-to-console-btn {
+  color: white;
+  background: #d41010;
 }
