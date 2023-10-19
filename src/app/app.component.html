@@ -26,8 +26,8 @@ Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
 </button>
 <br/><br/>
 <button (click)="resetColumnWidths(Number(rowIndex.value))">Reset column widths</button><br/>
-Row height: <input #rowHeight type="number" value="0"/>px<br/>
 Column width: <input #columnWidth type="number" value="0"/>px<br/>
+Row height: <input #rowHeight type="number" value="0"/>px<br/>
 <button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
   Set column width
 </button>
