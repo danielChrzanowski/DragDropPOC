@@ -25,11 +25,21 @@ Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
   Add row in column
 </button>
 <br/><br/>
+<button (click)="resetColumnWidths(Number(rowIndex.value))">Reset column widths</button><br/>
+Row height: <input #rowHeight type="number" value="0"/>px<br/>
+Column width: <input #columnWidth type="number" value="0"/>px<br/>
+<button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
+  Set column width
+</button>
+<br/><br/>
 
 <h3>box</h3>
 <div class="box">
   <div *ngFor="let row of box.rows; let i = index" class="row">
-    <div *ngFor="let column of row.columns; let j = index" [id]="'column-' + j" class="column">
+    <div *ngFor="let column of row.columns; let j = index"
+         [id]="'column-' + j"
+         [style]="getColumnWidthAsStyle(i, j)"
+         class="column">
       <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
            *ngFor="let rowInColumn of column.rowsInColumn; let k = index"
            [cdkDropListConnectedTo]=" getAllListsConnections()"

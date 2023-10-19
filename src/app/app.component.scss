@@ -15,6 +15,7 @@ $boxHeight: var(--box-height);
     .column {
       display: flex;
       flex-direction: column;
+      flex: 1;
       width: 100%;
       min-width: 0;
       overflow: hidden;

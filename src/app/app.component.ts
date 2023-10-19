@@ -99,19 +99,36 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
-  setColumnWidth(rowIndex: number, columnIndex: number, width: number): string {
-    this.box.rows[rowIndex].columns[columnIndex].width = width;
-    return `width: ${width}px`;
+  setColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
+    let rowUndefinedColumnWidthsCount: number = 0;
+    this.box.rows[rowIndex].columns.forEach((column: Column) => {
+      if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
+        this.box.rows[rowIndex].columns[columnIndex].width = width;
+        return;
+      }
+      if (!column.width) rowUndefinedColumnWidthsCount += 1;
+    });
+  }
+
+  resetColumnWidths(rowIndex: number): void {
+    this.box.rows[rowIndex].columns = this.box.rows[rowIndex].columns.map((column: Column) => {
+      let updatedColumn: Column = column;
+      updatedColumn.width = undefined;
+      return updatedColumn;
+    })
+  }
+
+  getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
+    return this.box.rows[rowIndex].columns[columnIndex].width ? `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
   }
 
   printObjectToConsole(): void {
-    console.log("BOX:", this.box)
+    console.log("BOX:", this.box);
   }
 
   generateId(row: number, column: number, columnRow: number): string {
     return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
-
 
   private regenerateAllIds(): void {
     for (let i: number = 0; i < this.box.rows.length; i += 1) {
