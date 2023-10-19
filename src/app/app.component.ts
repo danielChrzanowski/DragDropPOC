@@ -109,32 +109,41 @@ export class AppComponent implements OnInit {
   }
 
   setRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
-//TODO paddingi jak beda?
-    this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height = height;
-    // let rowUndefinedColumnWidthsCount: number = 0;
-    // this.box.rows[rowIndex].columns.forEach((column: Column) => {
-    //   if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
-    //     this.box.rows[rowIndex].columns[columnIndex].width = height;
-    //     return;
-    //   }
-    //   if (!column.width) rowUndefinedColumnWidthsCount += 1;
-    // });
+    let columnUndefinedRowHeightCount: number = 0;
+    this.box.rows[rowIndex].columns[columnIndex].columnRows.forEach((columnRow: ColumnRow) => {
+      if (columnUndefinedRowHeightCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height) {
+        this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height = height;
+        return;
+      }
+      if (!columnRow.height) columnUndefinedRowHeightCount += 1;
+    });
   }
 
   getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
-    return this.box.rows[rowIndex].columns[columnIndex].width ? `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
+    return this.box.rows[rowIndex].columns[columnIndex].width ?
+      `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
   }
 
   getRowHeightAsStyle(rowIndex: number, columnIndex: number, columnRowIndex: number): string {
-    return this.box.rows[rowIndex].columns[columnIndex].width ? `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].width}px;` : '';
+    return this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height ?
+      `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height}px;` : '';
   }
 
-  resetColumnWidths(rowIndex: number): void {
+  resetRowColumnsWidths(rowIndex: number): void {
     this.box.rows[rowIndex].columns = this.box.rows[rowIndex].columns.map((column: Column) => {
       let updatedColumn: Column = column;
       updatedColumn.width = undefined;
       return updatedColumn;
     })
+  }
+
+  resetColumnRowsHeights(rowIndex: number, columnIndex: number): void {
+    this.box.rows[rowIndex].columns[columnIndex].columnRows =
+      this.box.rows[rowIndex].columns[columnIndex].columnRows.map((columnRow: ColumnRow) => {
+        let updatedColumnRow: ColumnRow = columnRow;
+        updatedColumnRow.height = undefined;
+        return updatedColumnRow;
+      })
   }
 
   printBoxObjectToConsole(): void {
@@ -164,3 +173,7 @@ export class AppComponent implements OnInit {
     }
   }
 }
+
+//TODO data tytp smieniz ze string[]
+// tODO selected komorka
+//TODO paddingi jak beda?

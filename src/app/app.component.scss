@@ -6,7 +6,6 @@ $boxHeight: var(--box-height);
   flex-direction: column;
   width: $boxWidth;
   height: $boxHeight;
-  background: #edeff1;
 
   .row {
     display: flex;
@@ -20,6 +19,7 @@ $boxHeight: var(--box-height);
       width: 100%;
       min-width: 0;
       overflow: hidden;
+      background: #edeff1;
 
       .row-in-column {
         border: solid 1px #ccc;
@@ -32,7 +32,7 @@ $boxHeight: var(--box-height);
 
 .components {
   width: 200px;
-  height: 160px;
+  height: 150px;
 
   .components-list {
     border: solid 1px #ccc;

@@ -7,6 +7,9 @@
 </b>
 <br/><br/>
 
+<button (click)="printBoxObjectToConsole()" class="print-obj-to-console-btn">PRINT BOX OBJECT TO CONSOLE</button><br/>
+<br/>
+
 <b>Zmiana wymiarów boxa:</b><br/>
 Box width: <input #boxWidth [value]="box.width" type="number"/><br/>
 Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
@@ -16,30 +19,31 @@ Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
 <b>Współrzędne miejsca, w którym dodajemy element:</b><br/>
 Row index: <input #rowIndex type="number" value="0"/><br/>
 Column index: <input #columnIndex type="number" value="0"/><br/>
-Row in column index: <input #rowInColumnIndex type="number" value="0"/><br/>
+Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
 <button (click)="addRow(Number(rowIndex.value))">Add row</button>
-<button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(rowInColumnIndex.value))">
+<button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
   Add column in row
 </button>
-<button (click)="addColumnRow(Number(rowIndex.value), Number(columnIndex.value), Number(rowInColumnIndex.value))">
+<button (click)="addColumnRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
   Add row in column
 </button>
 <br/><br/>
 
 <b>Zmiana wymiarów komórki:</b><br/>
-<button (click)="resetColumnWidths(Number(rowIndex.value))">Reset column widths</button><br/>
+<button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
+<button (click)="resetColumnRowsHeights(Number(rowIndex.value), Number(columnIndex.value))">
+  Reset column rows heights
+</button>
+<br/>
 Column width: <input #columnWidth type="number" value="0"/>px<br/>
 Row height: <input #rowHeight type="number" value="0"/>px<br/>
 <button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
   Set column width
 </button>
 <button
-  (click)="setRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(rowInColumnIndex.value), Number(rowHeight.value))">
+  (click)="setRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
   Set row height
 </button>
-<br/><br/>
-
-<button (click)="printBoxObjectToConsole()" class="print-obj-to-console-btn">PRINT BOX OBJECT TO CONSOLE</button><br/>
 <br/>
 
 <!--________________COMPONENTS_LIST________________-->
