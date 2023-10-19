@@ -1,21 +1,31 @@
-export interface Box {
+export type Box = {
   width: number | undefined;
   height: number | undefined;
   rows: Row[];
 }
 
-export interface Row {
+export type Row = {
   height: number | undefined;
   columns: Column[];
 }
 
-export interface Column {
+export type Column = {
   width: number | undefined;
   columnRows: ColumnRow[];
 }
 
-export interface ColumnRow {
+export type ColumnRow = {
   height: number | undefined;
   id: string;
-  data: string[];
+  /*
+   TODO:
+    Te komórki (components) to są listy, tylko je ograniczyłem, że można max 1 element dodać, bo będzie w jednej komórce max 1 komponent,
+    ale jeśli jest jakaś libka, która to zrobi bez list, to można zmienić nazwę i typ na samo component: BoxComponent.
+  */
+  components: BoxComponent[];
+}
+
+export type BoxComponent = {
+  componentName: string;
+  inputsData: any[];
 }

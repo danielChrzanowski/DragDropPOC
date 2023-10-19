@@ -35,8 +35,8 @@ Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
   Reset column rows heights
 </button>
 <br/>
-Column width: <input #columnWidth type="number" value="0"/>px<br/>
-Row height: <input #rowHeight type="number" value="0"/>px<br/>
+Column width: <input #columnWidth type="number" value="30"/>px<br/>
+Row height: <input #rowHeight type="number" value="30"/>px<br/>
 <button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
   Set column width
 </button>
@@ -52,11 +52,11 @@ Row height: <input #rowHeight type="number" value="0"/>px<br/>
   <div>
     <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
          [cdkDropListConnectedTo]="getAllListsConnections()"
-         [cdkDropListData]="components"
+         [cdkDropListData]="exampleComponents"
          [id]="componentsListId"
          cdkDropList
          class="components-list">
-      <div *ngFor="let component of components" cdkDrag class="component">{{component}}</div>
+      <div *ngFor="let component of exampleComponents" cdkDrag class="component">{{component.componentName}}</div>
     </div>
   </div>
 </div>
@@ -73,12 +73,12 @@ Row height: <input #rowHeight type="number" value="0"/>px<br/>
       <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
            *ngFor="let rowInColumn of column.columnRows; let k = index"
            [cdkDropListConnectedTo]=" getAllListsConnections()"
-           [cdkDropListData]="rowInColumn.data"
+           [cdkDropListData]="rowInColumn.components"
            [id]="rowInColumn.id"
            [style]="getRowHeightAsStyle(i, j, k)"
            cdkDropList
            class="row-in-column">
-        <div *ngFor="let data of rowInColumn.data" cdkDrag class="component">{{data}}</div>
+        <div *ngFor="let data of rowInColumn.components" cdkDrag class="component">{{data.componentName}}</div>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Box, Column, ColumnRow, Row } from "./models";
+import { Box, BoxComponent, Column, ColumnRow, Row } from "./models";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,12 @@ import { Box, Column, ColumnRow, Row } from "./models";
 })
 export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
-  components: string[] = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
+  exampleComponents: BoxComponent[] = [
+    {componentName: 'component-1', inputsData: []},
+    {componentName: 'component-2', inputsData: []},
+    {componentName: 'component-3', inputsData: []},
+    {componentName: 'component-4', inputsData: []}
+  ];
 
   box: Box = {
     width: 600,
@@ -21,7 +26,7 @@ export class AppComponent implements OnInit {
         columnRows: [{
           height: undefined,
           id: this.generateId(0, 0, 0),
-          data: []
+          components: []
         }]
       }]
     }]
@@ -36,7 +41,7 @@ export class AppComponent implements OnInit {
     this.setBoxSize(this.box.width, this.box.height);
   }
 
-  onBoxCellItemDrop(event: CdkDragDrop<string[]>): void {
+  onBoxCellItemDrop(event: CdkDragDrop<BoxComponent[]>): void {
     if (event.container.data.length < 1) {
       if (event.previousContainer.id === this.componentsListId) {
         copyArrayItem(
@@ -70,7 +75,7 @@ export class AppComponent implements OnInit {
       height: undefined,
       columns: [{
         width: undefined,
-        columnRows: [{height: undefined, id: this.generateId(0, 0, 0), data: []}]
+        columnRows: [{height: undefined, id: this.generateId(0, 0, 0), components: []}]
       }]
     });
     this.regenerateAllIds();
@@ -82,7 +87,7 @@ export class AppComponent implements OnInit {
       columnRows: [{
         height: undefined,
         id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-        data: []
+        components: []
       }]
     });
     this.regenerateAllIds();
@@ -92,7 +97,7 @@ export class AppComponent implements OnInit {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
       height: undefined,
       id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-      data: []
+      components: []
     });
     this.regenerateAllIds();
   }
