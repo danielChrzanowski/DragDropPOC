@@ -32,8 +32,6 @@ export class AppComponent implements OnInit {
     }]
   }
 
-// TODO cleaning tego komponentu
-
   protected readonly Number: NumberConstructor = Number;
 
   constructor(private renderer2: Renderer2, private elementRef: ElementRef) {
@@ -70,6 +68,15 @@ export class AppComponent implements OnInit {
         column.columnRows.forEach((columnRow: ColumnRow) => allColumnsIds.push(columnRow.id)))
     );
     return [this.componentsListId, ...allColumnsIds];
+  }
+
+  setBoxSize(boxWidth: number | undefined, boxHeight: number | undefined): void {
+    this.box.width = boxWidth;
+    this.box.height = boxHeight;
+    this.renderer2.setProperty(this.elementRef.nativeElement,
+      'style',
+      `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`
+    );
   }
 
   addRow(rowIndex: number): void {
@@ -138,8 +145,7 @@ export class AppComponent implements OnInit {
   }
 
   getRowHeightAsStyle(rowIndex: number): string {
-    return this.box.rows[rowIndex].height ?
-      `flex: 0 0 ${this.box.rows[rowIndex].height}px;` : '';
+    return this.box.rows[rowIndex].height ? `flex: 0 0 ${this.box.rows[rowIndex].height}px;` : '';
   }
 
   getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
@@ -152,21 +158,21 @@ export class AppComponent implements OnInit {
       `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height}px;` : '';
   }
 
-  resetRowColumnsWidths(rowIndex: number): void {
-    this.box.rows[rowIndex].columns = this.box.rows[rowIndex].columns.map((column: Column) => {
-      let updatedColumn: Column = column;
-      updatedColumn.width = undefined;
-      return updatedColumn;
-    })
-  }
-
-  resetRowsHeights(rowIndex: number): void {
+  resetRowsHeights(): void {
     this.box.rows =
       this.box.rows.map((row: Row) => {
         let updatedRow: Row = row;
         updatedRow.height = undefined;
         return updatedRow;
       })
+  }
+
+  resetRowColumnsWidths(rowIndex: number): void {
+    this.box.rows[rowIndex].columns = this.box.rows[rowIndex].columns.map((column: Column) => {
+      let updatedColumn: Column = column;
+      updatedColumn.width = undefined;
+      return updatedColumn;
+    })
   }
 
   resetColumnRowsHeights(rowIndex: number, columnIndex: number): void {
@@ -180,15 +186,6 @@ export class AppComponent implements OnInit {
 
   printBoxObjectToConsole(): void {
     console.log("BOX:", this.box);
-  }
-
-  setBoxSize(boxWidth: number | undefined, boxHeight: number | undefined): void {
-    this.box.width = boxWidth;
-    this.box.height = boxHeight;
-    this.renderer2.setProperty(this.elementRef.nativeElement,
-      'style',
-      `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`
-    );
   }
 
   generateId(row: number, column: number, columnRow: number): string {

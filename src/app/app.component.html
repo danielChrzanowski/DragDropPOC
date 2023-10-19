@@ -30,7 +30,7 @@ Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
 <br/><br/>
 
 <b>Zmiana wymiarów komórki:</b><br/>
-<button (click)="resetRowsHeights(Number(rowIndex.value))">Reset rows heights</button>
+<button (click)="resetRowsHeights()">Reset rows heights</button>
 <button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
 <button (click)="resetColumnRowsHeights(Number(rowIndex.value), Number(columnIndex.value))">
   Reset column rows heights
