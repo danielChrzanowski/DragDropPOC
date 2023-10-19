@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
-  setColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
+  setRowColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
     let rowUndefinedColumnWidthsCount: number = 0;
     this.box.rows[rowIndex].columns.forEach((column: Column) => {
       if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
+  setColumnRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
     let columnUndefinedRowHeightCount: number = 0;
     this.box.rows[rowIndex].columns[columnIndex].columnRows.forEach((columnRow: ColumnRow) => {
       if (columnUndefinedRowHeightCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height) {
@@ -178,5 +178,3 @@ export class AppComponent implements OnInit {
     }
   }
 }
-
-//TODO paddingi jak beda?

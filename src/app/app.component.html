@@ -16,7 +16,7 @@ Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
 <button (click)="setBoxSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
 <br/><br/>
 
-<b>Współrzędne miejsca, w którym dodajemy element:</b><br/>
+<b>Współrzędne miejsca, w którym dodajemy lub edytujemy element:</b><br/>
 Row index: <input #rowIndex type="number" value="0"/><br/>
 Column index: <input #columnIndex type="number" value="0"/><br/>
 Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
@@ -37,12 +37,12 @@ Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
 <br/>
 Column width: <input #columnWidth type="number" value="30"/>px<br/>
 Row height: <input #rowHeight type="number" value="30"/>px<br/>
-<button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
-  Set column width
+<button (click)="setRowColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
+  Set row column width
 </button>
 <button
-  (click)="setRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
-  Set row height
+  (click)="setColumnRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
+  Set column row height
 </button>
 <br/>
 
