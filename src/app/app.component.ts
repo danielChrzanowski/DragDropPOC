@@ -179,6 +179,4 @@ export class AppComponent implements OnInit {
   }
 }
 
-//TODO data tytp smieniz ze string[]
-// tODO selected komorka
 //TODO paddingi jak beda?
