@@ -108,17 +108,17 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setRowHeight(rowIndex: number, columnIndex: number, height: number): void {
+  setRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
+//TODO
 
-
-    // let rowUndefinedColumnWidthsCount: number = 0;
-    // this.box.rows[rowIndex].columns.forEach((column: Column) => {
-    //   if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
-    //     this.box.rows[rowIndex].columns[columnIndex].width = width;
-    //     return;
-    //   }
-    //   if (!column.width) rowUndefinedColumnWidthsCount += 1;
-    // });
+    let rowUndefinedColumnWidthsCount: number = 0;
+    this.box.rows[rowIndex].columns.forEach((column: Column) => {
+      if (rowUndefinedColumnWidthsCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].width) {
+        this.box.rows[rowIndex].columns[columnIndex].width = height;
+        return;
+      }
+      if (!column.width) rowUndefinedColumnWidthsCount += 1;
+    });
   }
 
   resetColumnWidths(rowIndex: number): void {

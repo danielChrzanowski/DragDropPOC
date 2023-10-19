@@ -1,18 +1,10 @@
-<h3>{{componentsListId}}</h3>
-<div class="components">
-  <div>
-    <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-         [cdkDropListConnectedTo]="getAllListsConnections()"
-         [cdkDropListData]="components"
-         [id]="componentsListId"
-         cdkDropList
-         class="components-list">
-      <div *ngFor="let component of components" cdkDrag class="component">{{component}}</div>
-    </div>
-  </div>
-</div>
-
 <h3>options</h3>
+<b>
+  1. Wiersze i kolumny są numerowane od 0.<br/>
+  2. Każdy wiersz składa się z kolumn, kolumny mają w sobie kolejne wiersze.<br/>
+  3. Można przeciągać elementy z listy komponentów na komórki w boxie.
+</b>
+<br/><br/>
 Box width: <input #boxWidth [value]="box.width" type="number"/><br/>
 Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
 <button (click)="setBoxSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
@@ -37,10 +29,25 @@ Row height: <input #rowHeight type="number" value="0"/>px<br/>
 <button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
   Set column width
 </button>
-<button (click)="setRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(rowHeight.value))">
+<button
+  (click)="setRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(rowInColumnIndex.value), Number(rowHeight.value))">
   Set row height
 </button>
 <br/><br/>
+
+<h3>{{componentsListId}}</h3>
+<div class="components">
+  <div>
+    <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
+         [cdkDropListConnectedTo]="getAllListsConnections()"
+         [cdkDropListData]="components"
+         [id]="componentsListId"
+         cdkDropList
+         class="components-list">
+      <div *ngFor="let component of components" cdkDrag class="component">{{component}}</div>
+    </div>
+  </div>
+</div>
 
 <h3>box</h3>
 <div class="box">
