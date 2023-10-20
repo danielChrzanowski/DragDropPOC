@@ -188,7 +188,7 @@ export class AppComponent implements OnInit {
     console.log("BOX:", this.box);
   }
 
-  private generateId(row: number, column: number, columnRow: number): string {
+  generateId(row: number, column: number, columnRow: number): string {
     return `row-${row}-column-${column}-columnRow-${columnRow}`;
   }
 
