@@ -6,10 +6,16 @@
   gap: 50px;
 
   .box {
-    display: flex;
-    flex-direction: column;
     width: $boxWidth;
     height: $boxHeight;
+    position: relative;
+
+    .close-box-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 16px;
+    }
 
     .row {
       display: flex;

@@ -73,6 +73,7 @@
     <!--________________BOX________________-->
     <h3>box</h3>
     <div class="box">
+      <div class="close-box-btn">X</div>
       <div *ngFor="let row of box.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
         <div *ngFor="let column of row.columns; let j = index"
              [id]="'column-' + j"

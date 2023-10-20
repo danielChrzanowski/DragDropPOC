@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   box: Box = {
     width: 600,
     height: 300,
+    backgroundImage: undefined,
     rows: [{
       height: undefined,
       columns: [{

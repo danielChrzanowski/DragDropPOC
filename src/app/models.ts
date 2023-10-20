@@ -1,6 +1,7 @@
 export type Box = {
   width: number;
   height: number;
+  backgroundImage: string | undefined;
   rows: Row[];
 }
 
