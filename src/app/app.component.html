@@ -1,87 +1,94 @@
-<!--________________OPTIONS________________-->
-<b>
-  1. Wiersze i kolumny są numerowane od 0.<br/>
-  2. Każdy wiersz składa się z kolumn, kolumny mają w sobie kolejne wiersze.<br/>
-  3. Można przeciągać elementy z listy komponentów na komórki w boxie.
-  <div class="color-red">4. ZWRÓĆ UWAGĘ NA WYBRANE INDEXY!</div>
-</b>
-<br/>
-
-<button (click)="printBoxObjectToConsole()" class="print-obj-to-console-btn">PRINT BOX OBJECT TO CONSOLE</button><br/>
-<br/>
-
-<b>Zmiana wymiarów boxa:</b><br/>
-Box width: <input #boxWidth [value]="box.width" type="number"/><br/>
-Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
-<button (click)="setBoxSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
-<br/><br/>
-
-<b>Współrzędne miejsca, w którym dodajemy lub edytujemy element:</b><br/>
-Row index: <input #rowIndex type="number" value="0"/><br/>
-Column index: <input #columnIndex type="number" value="0"/><br/>
-Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
-<button (click)="addRow(Number(rowIndex.value))">Add row</button>
-<button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
-  Add column in row
-</button>
-<button (click)="addColumnRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
-  Add row in column
-</button>
-<br/><br/>
-
-<b>Zmiana wymiarów komórki:</b><br/>
-<button (click)="resetRowsHeights()">Reset rows heights</button>
-<button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
-<button (click)="resetColumnRowsHeights(Number(rowIndex.value), Number(columnIndex.value))">
-  Reset column rows heights
-</button>
-<br/>
-Column width: <input #columnWidth type="number" value="30"/>px<br/>
-Row height: <input #rowHeight type="number" value="30"/>px<br/>
-<button (click)="setRowHeight(Number(rowIndex.value), Number(rowHeight.value))">
-  Set row height
-</button>
-<button (click)="setRowColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
-  Set row column width
-</button>
-<button
-  (click)="setColumnRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
-  Set column row height
-</button>
-<br/>
-
-<!--________________COMPONENTS_LIST________________-->
-<h3>{{componentsListId}}</h3>
-<div class="components">
+<div class="content-container">
   <div>
-    <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-         [cdkDropListConnectedTo]="getAllListsConnections()"
-         [cdkDropListData]="exampleComponents"
-         [id]="componentsListId"
-         cdkDropList
-         class="components-list">
-      <div *ngFor="let component of exampleComponents" cdkDrag class="component">{{component.componentSelector}}</div>
-    </div>
-  </div>
-</div>
+    <!--________________OPTIONS________________-->
+    <h3>options</h3>
+    <b>
+      1. Wiersze i kolumny są numerowane od 0.<br/>
+      2. Każdy wiersz składa się z kolumn, kolumny mają w sobie kolejne wiersze.<br/>
+      3. Można przeciągać elementy z listy komponentów na komórki w boxie.
+      <div class="color-red">4. ZWRÓĆ UWAGĘ NA WYBRANE INDEXY!</div>
+    </b>
+    <br/>
 
-<!--________________BOX________________-->
-<h3>box</h3>
-<div class="box">
-  <div *ngFor="let row of box.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
-    <div *ngFor="let column of row.columns; let j = index"
-         [id]="'column-' + j"
-         [style]="getColumnWidthAsStyle(i, j)"
-         class="column">
-      <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-           *ngFor="let rowInColumn of column.columnRows; let k = index"
-           [cdkDropListConnectedTo]=" getAllListsConnections()"
-           [cdkDropListData]="rowInColumn.components"
-           [id]="rowInColumn.id"
-           [style]="getColumnRowHeightAsStyle(i, j, k)"
-           cdkDropList
-           class="row-in-column">
-        <div *ngFor="let data of rowInColumn.components" cdkDrag class="component">{{data.componentSelector}}</div>
+    <button (click)="printBoxObjectToConsole()" class="print-obj-to-console-btn">PRINT BOX OBJECT TO CONSOLE</button>
+    <br/><br/>
+
+    <b>Zmiana wymiarów boxa:</b><br/>
+    Box width: <input #boxWidth [value]="box.width" type="number"/><br/>
+    Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
+    <button (click)="setBoxSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
+    <br/><br/>
+
+    <b>Współrzędne miejsca, w którym dodajemy lub edytujemy element:</b><br/>
+    Row index: <input #rowIndex type="number" value="0"/><br/>
+    Column index: <input #columnIndex type="number" value="0"/><br/>
+    Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
+    <button (click)="addRow(Number(rowIndex.value))">Add row</button>
+    <button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
+      Add column in row
+    </button>
+    <button (click)="addColumnRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
+      Add row in column
+    </button>
+    <br/><br/>
+
+    <b>Zmiana wymiarów komórki:</b><br/>
+    <button (click)="resetRowsHeights()">Reset rows heights</button>
+    <button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
+    <button (click)="resetColumnRowsHeights(Number(rowIndex.value), Number(columnIndex.value))">
+      Reset column rows heights
+    </button>
+    <br/>
+    Column width: <input #columnWidth type="number" value="30"/>px<br/>
+    Row height: <input #rowHeight type="number" value="30"/>px<br/>
+    <button (click)="setRowHeight(Number(rowIndex.value), Number(rowHeight.value))">
+      Set row height
+    </button>
+    <button (click)="setRowColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
+      Set row column width
+    </button>
+    <button
+      (click)="setColumnRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
+      Set column row height
+    </button>
+  </div>
+
+  <div>
+    <!--________________COMPONENTS_LIST________________-->
+    <h3>{{componentsListId}}</h3>
+    <div class="components">
+      <div>
+        <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
+             [cdkDropListConnectedTo]="getAllListsConnections()"
+             [cdkDropListData]="exampleComponents"
+             [id]="componentsListId"
+             cdkDropList
+             class="components-list">
+          <div *ngFor="let component of exampleComponents" cdkDrag
+               class="component">{{component.componentSelector}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!--________________BOX________________-->
+    <h3>box</h3>
+    <div class="box">
+      <div *ngFor="let row of box.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
+        <div *ngFor="let column of row.columns; let j = index"
+             [id]="'column-' + j"
+             [style]="getColumnWidthAsStyle(i, j)"
+             class="column">
+          <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
+               *ngFor="let rowInColumn of column.columnRows; let k = index"
+               [cdkDropListConnectedTo]=" getAllListsConnections()"
+               [cdkDropListData]="rowInColumn.components"
+               [id]="rowInColumn.id"
+               [style]="getColumnRowHeightAsStyle(i, j, k)"
+               cdkDropList
+               class="row-in-column">
+            <div *ngFor="let data of rowInColumn.components" cdkDrag class="component">{{data.componentSelector}}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
