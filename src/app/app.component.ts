@@ -10,10 +10,10 @@ import { Box, BoxComponent, Column, ColumnRow, Row } from "./models";
 export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
-    {componentName: 'component-1', inputsData: []},
-    {componentName: 'component-2', inputsData: []},
-    {componentName: 'component-3', inputsData: []},
-    {componentName: 'component-4', inputsData: []}
+    {componentSelector: 'component-1', inputsData: []},
+    {componentSelector: 'component-2', inputsData: []},
+    {componentSelector: 'component-3', inputsData: []},
+    {componentSelector: 'component-4', inputsData: []}
   ];
 
   box: Box = {

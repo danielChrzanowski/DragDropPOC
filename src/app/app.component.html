@@ -60,7 +60,7 @@ Row height: <input #rowHeight type="number" value="30"/>px<br/>
          [id]="componentsListId"
          cdkDropList
          class="components-list">
-      <div *ngFor="let component of exampleComponents" cdkDrag class="component">{{component.componentName}}</div>
+      <div *ngFor="let component of exampleComponents" cdkDrag class="component">{{component.componentSelector}}</div>
     </div>
   </div>
 </div>
@@ -81,7 +81,7 @@ Row height: <input #rowHeight type="number" value="30"/>px<br/>
            [style]="getColumnRowHeightAsStyle(i, j, k)"
            cdkDropList
            class="row-in-column">
-        <div *ngFor="let data of rowInColumn.components" cdkDrag class="component">{{data.componentName}}</div>
+        <div *ngFor="let data of rowInColumn.components" cdkDrag class="component">{{data.componentSelector}}</div>
       </div>
     </div>
   </div>
