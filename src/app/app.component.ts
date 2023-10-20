@@ -19,13 +19,9 @@ export class AppComponent implements OnInit {
   box: Box = {
     width: 600,
     height: 300,
-    backgroundImage: undefined,
     rows: [{
-      height: undefined,
       columns: [{
-        width: undefined,
         columnRows: [{
-          height: undefined,
           id: this.generateId(0, 0, 0),
           components: []
         }]
@@ -83,10 +79,8 @@ export class AppComponent implements OnInit {
 
   addRow(rowIndex: number): void {
     this.box.rows.splice(rowIndex, 0, {
-      height: undefined,
       columns: [{
-        width: undefined,
-        columnRows: [{height: undefined, id: this.generateId(0, 0, 0), components: []}]
+        columnRows: [{id: this.generateId(0, 0, 0), components: []}]
       }]
     });
     this.regenerateAllIds();
@@ -94,9 +88,7 @@ export class AppComponent implements OnInit {
 
   addColumnInRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
-      width: undefined,
       columnRows: [{
-        height: undefined,
         id: this.generateId(rowIndex, columnIndex, columnRowIndex),
         components: []
       }]
@@ -106,7 +98,6 @@ export class AppComponent implements OnInit {
 
   addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
-      height: undefined,
       id: this.generateId(rowIndex, columnIndex, columnRowIndex),
       components: []
     });

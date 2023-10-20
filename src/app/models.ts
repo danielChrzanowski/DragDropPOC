@@ -1,22 +1,21 @@
 export type Box = {
+  rows: Row[];
   width: number;
   height: number;
-  backgroundImage: string | undefined;
-  rows: Row[];
+  backgroundImage?: string;
 }
 
 export type Row = {
-  height: number | undefined;
   columns: Column[];
+  height?: number;
 }
 
 export type Column = {
-  width: number | undefined;
   columnRows: ColumnRow[];
+  width?: number;
 }
 
 export type ColumnRow = {
-  height: number | undefined;
   id: string;
   /*
    TODO:
@@ -25,9 +24,10 @@ export type ColumnRow = {
     bo '@angular/cdk' pozwala tylko z listy na listę przerzucać. Nie da się z listy na jakiś placeholder czy coś.
   */
   components: BoxComponent[];
+  height?: number;
 }
 
 export type BoxComponent = {
   componentSelector: string;
-  inputsData: { [keys: string]: any };
+  inputsData?: { [keys: string]: any };
 }
