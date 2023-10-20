@@ -9,9 +9,9 @@
   .box {
     display: flex;
     flex-direction: column;
+    position: relative;
     width: $boxWidth;
     height: $boxHeight;
-    position: relative;
     background-image: $backgroundImage;
     background-size: 100% 100%;
 
