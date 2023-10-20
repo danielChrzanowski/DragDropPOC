@@ -7,6 +7,8 @@
   gap: 50px;
 
   .box {
+    display: flex;
+    flex-direction: column;
     width: $boxWidth;
     height: $boxHeight;
     position: relative;
