@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     return [this.componentsListId, ...allColumnsIds];
   }
 
-  setBoxSize(boxWidth: number | undefined, boxHeight: number | undefined): void {
+  setBoxSize(boxWidth: number, boxHeight: number): void {
     this.box.width = boxWidth;
     this.box.height = boxHeight;
     this.renderer2.setProperty(this.elementRef.nativeElement,
