@@ -66,7 +66,8 @@ export class AppComponent implements OnInit {
     const allColumnsIds: string[] = [];
     this.box.rows.forEach((row: Row) =>
       row.columns.forEach((column: Column) =>
-        column.columnRows.forEach((columnRow: ColumnRow) => allColumnsIds.push(columnRow.id)))
+        column.columnRows.forEach((columnRow: ColumnRow) =>
+          allColumnsIds.push(columnRow.id)))
     );
     return [this.componentsListId, ...allColumnsIds];
   }
@@ -76,7 +77,7 @@ export class AppComponent implements OnInit {
     this.box.height = boxHeight;
     this.renderer2.setProperty(this.elementRef.nativeElement,
       'style',
-      `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`
+      this.createSCSSVariablesString(this.box.width, this.box.height, this.box.backgroundImage)
     );
   }
 
@@ -189,8 +190,21 @@ export class AppComponent implements OnInit {
     console.log("BOX:", this.box);
   }
 
+  applyBackgroundImage(backgroundImageURL: string): void {
+    this.box.backgroundImage = backgroundImageURL;
+    this.renderer2.setProperty(this.elementRef.nativeElement,
+      'style',
+      this.createSCSSVariablesString(this.box.width, this.box.height, backgroundImageURL)
+    );
+  }
+
   generateId(row: number, column: number, columnRow: number): string {
     return `row-${row}-column-${column}-columnRow-${columnRow}`;
+  }
+
+  private createSCSSVariablesString(boxWidth: number, boxHeight: number, backgroundImageURL: string | undefined): string {
+    let resultString: string = `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`;
+    return backgroundImageURL ? resultString + `--background-image: url(${backgroundImageURL});` : resultString;
   }
 
   private regenerateAllIds(): void {

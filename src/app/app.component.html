@@ -51,6 +51,9 @@
       (click)="setColumnRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
       Set column row height
     </button>
+    <br/><br/>
+    Background image URL: <input #backgroundImageURL/>
+    <button (click)="applyBackgroundImage(backgroundImageURL.value)">Apply background image</button>
   </div>
 
   <div>

@@ -1,6 +1,7 @@
 .content-container {
   $boxWidth: var(--box-width);
   $boxHeight: var(--box-height);
+  $backgroundImage: var(--background-image);
 
   display: flex;
   gap: 50px;
@@ -9,6 +10,8 @@
     width: $boxWidth;
     height: $boxHeight;
     position: relative;
+    background-image: $backgroundImage;
+    background-size: 100% 100%;
 
     .close-box-btn {
       position: absolute;
@@ -29,7 +32,6 @@
         width: 100%;
         min-width: 0;
         overflow: hidden;
-        background: #edeff1;
 
         .row-in-column {
           border: solid 1px #ccc;

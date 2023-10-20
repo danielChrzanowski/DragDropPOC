@@ -29,5 +29,5 @@ export type ColumnRow = {
 
 export type BoxComponent = {
   componentSelector: string;
-  inputsData: any[];
+  inputsData: { [keys: string]: any };
 }
