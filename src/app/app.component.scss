@@ -85,7 +85,13 @@ $boxHeight: var(--box-height);
 }
 
 //Additional styles
+$redColor: #d41010;
+
+.color-red {
+  color: $redColor;
+}
+
 .print-obj-to-console-btn {
   color: white;
-  background: #d41010;
+  background: $redColor;
 }
