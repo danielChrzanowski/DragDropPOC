@@ -1,0 +1,6 @@
+<ng-container [ngSwitch]="componentSelector">
+  <ng-container *ngSwitchCase="'app-text-component'">
+    <app-text-component [fontSize]="inputsData?.fontSize" [text]="inputsData?.text"></app-text-component>
+  </ng-container>
+  <ng-container *ngSwitchDefault>Default</ng-container>
+</ng-container>

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Box, BoxComponent, Column, ColumnRow, Row } from "./models";
+import { Box, BoxComponent, Channel, Column, ColumnRow, ResolutionThreshold, Row, Type } from "./models";
 
 @Component({
   selector: 'app-root',
@@ -10,20 +10,23 @@ import { Box, BoxComponent, Column, ColumnRow, Row } from "./models";
 export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
-    {componentSelector: 'component-1', inputsData: []},
-    {componentSelector: 'component-2', inputsData: []},
-    {componentSelector: 'component-3', inputsData: []},
-    {componentSelector: 'component-4', inputsData: []}
+    {componentSelector: 'app-text-component', inputsData: {text: 'test test tekst', fontSize: 25}},
+    {componentSelector: 'component-2'},
+    {componentSelector: 'component-3'},
+    {componentSelector: 'component-4'}
   ];
 
   box: Box = {
     width: 600,
     height: 300,
+    type: Type.Banner,
+    channel: Channel.WWW,
+    resolutionThreshold: ResolutionThreshold.Desktop,
     rows: [{
       columns: [{
         columnRows: [{
           id: this.generateId(0, 0, 0),
-          components: []
+          components: [],
         }]
       }]
     }]

@@ -1,7 +1,31 @@
+/*
+  TODO:
+   Te enumy będą już w contentach w API chyba, ale chyba trzeba będzie je dać tutaj, bo libka będzie ich używała?
+   Albo stworzyć nowe API dla libki?
+*/
+export enum Type {
+  Banner,
+}
+
+export enum Channel {
+  WWW
+}
+
+export enum ResolutionThreshold { // Ten się pewnie inaczej nazywa?
+  Desktop,
+  Tablet,
+  Mobile
+}
+
+// ----------------------------------------------
+
 export type Box = {
   rows: Row[];
   width: number;
   height: number;
+  type: Type;
+  channel: Channel;
+  resolutionThreshold: ResolutionThreshold
   backgroundImage?: string;
 }
 
