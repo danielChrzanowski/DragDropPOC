@@ -69,9 +69,7 @@
              class="components-list">
           <div *ngFor="let component of exampleComponents" cdkDrag class="component">
             <div *cdkDragPlaceholder class="component-placeholder"></div>
-            <app-component-selector [componentSelector]="component.componentSelector"
-                                    [inputsData]="component.inputsData">
-            </app-component-selector>
+            <app-component-selector [boxComponent]="component"></app-component-selector>
           </div>
         </div>
       </div>
@@ -89,16 +87,14 @@
           <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
                *ngFor="let rowInColumn of column.columnRows; let k = index"
                [cdkDropListConnectedTo]=" getAllListsConnections()"
-               [cdkDropListData]="rowInColumn.components"
+               [cdkDropListData]="rowInColumn.component"
                [id]="rowInColumn.id"
                [style]="getColumnRowHeightAsStyle(i, j, k)"
                cdkDropList
                class="row-in-column">
-            <div *ngFor="let component of rowInColumn.components" cdkDrag class="component">
+            <div *ngFor="let component of rowInColumn.component" cdkDrag class="component">
               <div *cdkDragPlaceholder class="component-placeholder"></div>
-              <app-component-selector [componentSelector]="component.componentSelector"
-                                      [inputsData]="component.inputsData">
-              </app-component-selector>
+              <app-component-selector [boxComponent]="component"></app-component-selector>
             </div>
           </div>
         </div>

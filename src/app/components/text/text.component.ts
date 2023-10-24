@@ -7,8 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class TextComponent {
   @Input()
-  text: string;
-
-  @Input()
-  fontSize?: number;
+  textComponentInputs: TextComponent;
 }

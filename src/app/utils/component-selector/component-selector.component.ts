@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { BoxComponent } from '../../models';
 
 @Component({
   selector: 'app-component-selector',
@@ -7,8 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ComponentSelectorComponent {
   @Input()
-  componentSelector: string;
-
-  @Input()
-  inputsData?: { [keys: string]: any };
+  boxComponent: BoxComponent;
 }

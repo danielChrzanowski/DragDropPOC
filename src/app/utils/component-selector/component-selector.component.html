@@ -1,6 +1,6 @@
-<ng-container [ngSwitch]="componentSelector">
-  <app-text-component *ngSwitchCase="'app-text-component'"
-                      [fontSize]="inputsData?.fontSize"
-                      [text]="inputsData?.text"></app-text-component>
-  <app-image-component *ngSwitchCase="'app-image-component'" [imgSrc]="inputsData?.imgSrc"></app-image-component>
-</ng-container>
+<app-text-component *ngIf="boxComponent.textComponent"
+                    [textComponentInputs]="boxComponent.textComponent">
+</app-text-component>
+<app-image-component *ngIf="boxComponent.imageComponent"
+                     [imageComponentInputs]="boxComponent.imageComponent">
+</app-image-component>

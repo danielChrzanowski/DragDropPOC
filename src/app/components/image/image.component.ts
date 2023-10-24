@@ -7,8 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ImageComponent {
   @Input()
-  imgSrc: string;
-
-  @Input()
-  imgAlt: string;
+  imageComponentInputs: ImageComponent;
 }
