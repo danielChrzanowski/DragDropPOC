@@ -1,6 +1,12 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { CdkDragDrop, copyArrayItem, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Box, BoxComponent, Channel, Column, ColumnRow, ResolutionThreshold, Row, Type } from "./models";
+
+type CoordinatesInBox = {
+  row: number,
+  column: number,
+  columnRow: number
+}
 
 @Component({
   selector: 'app-root',
@@ -19,6 +25,9 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  boxCoordinatesConnector: string = '_';
+  boxCoordinateConnector = '-';
+
   box: Box = {
     width: 600,
     height: 300,
@@ -29,7 +38,7 @@ export class AppComponent implements OnInit {
       columns: [{
         columnRows: [{
           id: this.generateId(0, 0, 0),
-          components: [],
+          component: {},
         }]
       }]
     }]
@@ -44,23 +53,15 @@ export class AppComponent implements OnInit {
     this.setBoxSize(this.box.width, this.box.height);
   }
 
-  onBoxCellItemDrop(event: CdkDragDrop<BoxComponent[]>): void {
-    if (event.container.data.length < 1) {
-      if (event.previousContainer.id === this.componentsListId) {
-        copyArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-      } else {
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-      }
+  onBoxCellItemDrop(event: CdkDragDrop<BoxComponent, any>): void {
+    console.log(event);
+    const coordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.container.id);
+    if (event.previousContainer.id === this.componentsListId) {
+      this.box.rows[coordinatesInBox.row].columns[coordinatesInBox.column].columnRows[coordinatesInBox.columnRow].component =
+        event.previousContainer.data[event.previousIndex];
+    } else {
+      this.box.rows[coordinatesInBox.row].columns[coordinatesInBox.column].columnRows[coordinatesInBox.columnRow].component =
+        event.previousContainer.data;
     }
   }
 
@@ -86,7 +87,7 @@ export class AppComponent implements OnInit {
   addRow(rowIndex: number): void {
     this.box.rows.splice(rowIndex, 0, {
       columns: [{
-        columnRows: [{id: this.generateId(0, 0, 0), components: []}]
+        columnRows: [{id: this.generateId(0, 0, 0), component: {}}]
       }]
     });
     this.regenerateAllIds();
@@ -96,7 +97,7 @@ export class AppComponent implements OnInit {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
       columnRows: [{
         id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-        components: []
+        component: {}
       }]
     });
     this.regenerateAllIds();
@@ -105,7 +106,7 @@ export class AppComponent implements OnInit {
   addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
       id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-      components: []
+      component: {}
     });
     this.regenerateAllIds();
   }
@@ -196,7 +197,17 @@ export class AppComponent implements OnInit {
   }
 
   generateId(row: number, column: number, columnRow: number): string {
-    return `row-${row}-column-${column}-columnRow-${columnRow}`;
+    return `row${this.boxCoordinateConnector}${row}${this.boxCoordinatesConnector}` +
+      `column${this.boxCoordinateConnector}${column}${this.boxCoordinatesConnector}` +
+      `columnRow${this.boxCoordinateConnector}${columnRow}`;
+  }
+
+  decodeCoordinatesInBoxFromColumnRowId(columnRowId: string): { row: number, column: number, columnRow: number } {
+    const boxElements: string[] = columnRowId.split(this.boxCoordinatesConnector);
+    const coordinatesAsString: string[] = boxElements.map((element: string) => element.split(this.boxCoordinateConnector)[1]);
+    const result: number[] = coordinatesAsString.map((element: string) => Number(element));
+
+    return {row: result[0], column: result[1], columnRow: result[2]};
   }
 
   private createSCSSVariablesString(boxWidth: number, boxHeight: number, backgroundImageURL: string | undefined): string {
