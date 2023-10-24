@@ -4,12 +4,14 @@ import { AppComponent } from './app.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TextComponent } from './components/text/text.component';
 import { ComponentSelectorComponent } from './utils/component-selector/component-selector.component';
+import { ImageComponent } from './components/image/image.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TextComponent,
-    ComponentSelectorComponent
+    ComponentSelectorComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,

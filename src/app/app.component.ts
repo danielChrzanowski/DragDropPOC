@@ -11,9 +11,13 @@ export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
     {componentSelector: 'app-text-component', inputsData: {text: 'test test tekst', fontSize: 25}},
-    {componentSelector: 'component-2'},
-    {componentSelector: 'component-3'},
-    {componentSelector: 'component-4'}
+    {
+      componentSelector: 'app-image-component',
+      inputsData: {
+        imgSrc: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+        imgAlt: 'Clearing with high grass'
+      }
+    }
   ];
 
   box: Box = {

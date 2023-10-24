@@ -68,6 +68,7 @@
              cdkDropList
              class="components-list">
           <div *ngFor="let component of exampleComponents" cdkDrag class="component">
+            <div *cdkDragPlaceholder class="component-placeholder"></div>
             <app-component-selector [componentSelector]="component.componentSelector"
                                     [inputsData]="component.inputsData">
             </app-component-selector>
@@ -94,6 +95,7 @@
                cdkDropList
                class="row-in-column">
             <div *ngFor="let component of rowInColumn.components" cdkDrag class="component">
+              <div *cdkDragPlaceholder class="component-placeholder"></div>
               <app-component-selector [componentSelector]="component.componentSelector"
                                       [inputsData]="component.inputsData">
               </app-component-selector>
