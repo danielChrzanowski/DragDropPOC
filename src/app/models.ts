@@ -17,6 +17,11 @@ export enum ResolutionThreshold { // Ten się pewnie inaczej nazywa?
   Mobile
 }
 
+export enum ComponentTypes {
+  TextComponent,
+  ImageComponent
+}
+
 // ----------------------------------------------
 
 export type Box = {
@@ -46,10 +51,12 @@ export type ColumnRow = {
 }
 
 export type BoxComponent = {
+  componentName: ComponentTypes;
   textComponentInputs?: TextComponentInputs;
   imageComponentInputs?: ImageComponentInputs;
 }
 
+// Inputy BoxComponentu
 export type TextComponentInputs = {
   text: string;
 }
@@ -58,3 +65,4 @@ export type ImageComponentInputs = {
   imgSrc: string;
   imgAlt: string;
 }
+// ------------------

@@ -1,6 +1,8 @@
-<app-text-component *ngIf="boxComponent?.textComponentInputs"
-                    [textComponentInputs]="boxComponent?.textComponentInputs">
-</app-text-component>
-<app-image-component *ngIf="boxComponent?.imageComponentInputs"
-                     [imageComponentInputs]="boxComponent?.imageComponentInputs">
-</app-image-component>
+<ng-container [ngSwitch]="boxComponent?.componentName">
+  <app-text-component *ngSwitchCase="ComponentTypes.TextComponent"
+                      [textComponentInputs]="boxComponent?.textComponentInputs">
+  </app-text-component>
+  <app-image-component *ngSwitchCase="ComponentTypes.ImageComponent"
+                       [imageComponentInputs]="boxComponent?.imageComponentInputs">
+  </app-image-component>
+</ng-container>

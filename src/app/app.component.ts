@@ -1,6 +1,16 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Box, BoxComponent, Channel, Column, ColumnRow, ResolutionThreshold, Row, Type } from "./models";
+import {
+  Box,
+  BoxComponent,
+  Channel,
+  Column,
+  ColumnRow,
+  ComponentTypes,
+  ResolutionThreshold,
+  Row,
+  Type
+} from "./models";
 
 type CoordinatesInBox = {
   row: number,
@@ -17,11 +27,13 @@ export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
     {
+      componentName: ComponentTypes.TextComponent,
       textComponentInputs: {
         text: 'test test tekst'
       }
     },
     {
+      componentName: ComponentTypes.ImageComponent,
       imageComponentInputs: {
         imgSrc: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
         imgAlt: 'Clearing with high grass'
@@ -57,7 +69,6 @@ export class AppComponent implements OnInit {
   }
 
   onBoxCellItemDrop(event: CdkDragDrop<BoxComponent | undefined, any>): void {
-    console.log(event);
     const targetCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.container.id);
     if (event.previousContainer.id === this.componentsListId) {
       this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].columnRows[targetCoordinatesInBox.columnRow].component =
