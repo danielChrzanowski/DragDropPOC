@@ -16,7 +16,11 @@ type CoordinatesInBox = {
 export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
-    {textComponentInputs: {text: 'test test tekst', fontSize: 25}},
+    {
+      textComponentInputs: {
+        text: 'test test tekst'
+      }
+    },
     {
       imageComponentInputs: {
         imgSrc: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
@@ -25,8 +29,8 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  boxCoordinatesConnector: string = '_';
-  boxCoordinateConnector = '-';
+  boxCoordinatesSeparator: string = '_';
+  boxCoordinateConnector: string = '-';
 
   box: Box = {
     width: 600,
@@ -38,7 +42,6 @@ export class AppComponent implements OnInit {
       columns: [{
         columnRows: [{
           id: this.generateId(0, 0, 0),
-          component: {},
         }]
       }]
     }]
@@ -53,15 +56,17 @@ export class AppComponent implements OnInit {
     this.setBoxSize(this.box.width, this.box.height);
   }
 
-  onBoxCellItemDrop(event: CdkDragDrop<BoxComponent, any>): void {
+  onBoxCellItemDrop(event: CdkDragDrop<BoxComponent | undefined, any>): void {
     console.log(event);
-    const coordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.container.id);
+    const targetCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.container.id);
     if (event.previousContainer.id === this.componentsListId) {
-      this.box.rows[coordinatesInBox.row].columns[coordinatesInBox.column].columnRows[coordinatesInBox.columnRow].component =
+      this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].columnRows[targetCoordinatesInBox.columnRow].component =
         event.previousContainer.data[event.previousIndex];
     } else {
-      this.box.rows[coordinatesInBox.row].columns[coordinatesInBox.column].columnRows[coordinatesInBox.columnRow].component =
+      const sourceCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.previousContainer.id);
+      this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].columnRows[targetCoordinatesInBox.columnRow].component =
         event.previousContainer.data;
+      delete this.box.rows[sourceCoordinatesInBox.row].columns[sourceCoordinatesInBox.column].columnRows[sourceCoordinatesInBox.columnRow].component;
     }
   }
 
@@ -87,7 +92,7 @@ export class AppComponent implements OnInit {
   addRow(rowIndex: number): void {
     this.box.rows.splice(rowIndex, 0, {
       columns: [{
-        columnRows: [{id: this.generateId(0, 0, 0), component: {}}]
+        columnRows: [{id: this.generateId(0, 0, 0)}]
       }]
     });
     this.regenerateAllIds();
@@ -96,8 +101,7 @@ export class AppComponent implements OnInit {
   addColumnInRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
       columnRows: [{
-        id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-        component: {}
+        id: this.generateId(rowIndex, columnIndex, columnRowIndex)
       }]
     });
     this.regenerateAllIds();
@@ -105,8 +109,7 @@ export class AppComponent implements OnInit {
 
   addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
-      id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-      component: {}
+      id: this.generateId(rowIndex, columnIndex, columnRowIndex)
     });
     this.regenerateAllIds();
   }
@@ -197,13 +200,13 @@ export class AppComponent implements OnInit {
   }
 
   generateId(row: number, column: number, columnRow: number): string {
-    return `row${this.boxCoordinateConnector}${row}${this.boxCoordinatesConnector}` +
-      `column${this.boxCoordinateConnector}${column}${this.boxCoordinatesConnector}` +
+    return `row${this.boxCoordinateConnector}${row}${this.boxCoordinatesSeparator}` +
+      `column${this.boxCoordinateConnector}${column}${this.boxCoordinatesSeparator}` +
       `columnRow${this.boxCoordinateConnector}${columnRow}`;
   }
 
   decodeCoordinatesInBoxFromColumnRowId(columnRowId: string): { row: number, column: number, columnRow: number } {
-    const boxElements: string[] = columnRowId.split(this.boxCoordinatesConnector);
+    const boxElements: string[] = columnRowId.split(this.boxCoordinatesSeparator);
     const coordinatesAsString: string[] = boxElements.map((element: string) => element.split(this.boxCoordinateConnector)[1]);
     const result: number[] = coordinatesAsString.map((element: string) => Number(element));
 

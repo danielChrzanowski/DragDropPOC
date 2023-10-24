@@ -8,5 +8,5 @@ import { ImageComponentInputs } from '../../models';
 })
 export class ImageComponent {
   @Input()
-  imageComponentInputs: ImageComponentInputs;
+  imageComponentInputs?: ImageComponentInputs;
 }

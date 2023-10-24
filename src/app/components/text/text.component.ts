@@ -8,5 +8,5 @@ import { TextComponentInputs } from '../../models';
 })
 export class TextComponent {
   @Input()
-  textComponentInputs: TextComponentInputs;
+  textComponentInputs?: TextComponentInputs;
 }

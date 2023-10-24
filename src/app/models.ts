@@ -25,7 +25,7 @@ export type Box = {
   height: number;
   type: Type;
   channel: Channel;
-  resolutionThreshold: ResolutionThreshold
+  resolutionThreshold: ResolutionThreshold;
   backgroundImage?: string;
 }
 
@@ -41,7 +41,7 @@ export type Column = {
 
 export type ColumnRow = {
   id: string;
-  component: BoxComponent;
+  component?: BoxComponent;
   height?: number;
 }
 
@@ -52,7 +52,6 @@ export type BoxComponent = {
 
 export type TextComponentInputs = {
   text: string;
-  fontSize?: number;
 }
 
 export type ImageComponentInputs = {

@@ -8,5 +8,5 @@ import { BoxComponent } from '../../models';
 })
 export class ComponentSelectorComponent {
   @Input()
-  boxComponent: BoxComponent;
+  boxComponent?: BoxComponent;
 }
