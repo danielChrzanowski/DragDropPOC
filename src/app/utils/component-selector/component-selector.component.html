@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="boxComponent?.componentName">
+<ng-container [ngSwitch]="boxComponent?.componentType">
   <app-text-component *ngSwitchCase="ComponentTypes.TextComponent"
                       [textComponentInputs]="boxComponent?.textComponentInputs">
   </app-text-component>

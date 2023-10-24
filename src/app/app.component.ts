@@ -1,16 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import {
-  Box,
-  BoxComponent,
-  Channel,
-  Column,
-  ColumnRow,
-  ComponentTypes,
-  ResolutionThreshold,
-  Row,
-  Type
-} from "./models";
+import { Box, BoxComponent, Channel, Column, ColumnRow, ComponentType, ResolutionThreshold, Row, Type } from "./models";
 
 type CoordinatesInBox = {
   row: number,
@@ -27,13 +17,13 @@ export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
     {
-      componentName: ComponentTypes.TextComponent,
+      componentType: ComponentType.TextComponent,
       textComponentInputs: {
         text: 'test test tekst'
       }
     },
     {
-      componentName: ComponentTypes.ImageComponent,
+      componentType: ComponentType.ImageComponent,
       imageComponentInputs: {
         imgSrc: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
         imgAlt: 'Clearing with high grass'
