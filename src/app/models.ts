@@ -47,21 +47,21 @@ export type ColumnRow = {
     ale jeśli jest jakaś libka, która to zrobi bez list, to można zmienić nazwę i typ na samo 'component: BoxComponent',
     bo '@angular/cdk' pozwala tylko z listy na listę przerzucać. Nie da się z listy na jakiś placeholder czy coś.
   */
-  component: BoxComponent[];
+  components: BoxComponent[];
   height?: number;
 }
 
 export type BoxComponent = {
-  textComponent?: TextComponent;
-  imageComponent?: ImageComponent;
+  textComponentInputs?: TextComponentInputs;
+  imageComponentInputs?: ImageComponentInputs;
 }
 
-export type TextComponent = {
+export type TextComponentInputs = {
   text: string;
   fontSize?: number;
 }
 
-export type ImageComponent = {
+export type ImageComponentInputs = {
   imgSrc: string;
   imgAlt: string;
 }

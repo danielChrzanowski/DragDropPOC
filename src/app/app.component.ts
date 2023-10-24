@@ -10,9 +10,9 @@ import { Box, BoxComponent, Channel, Column, ColumnRow, ResolutionThreshold, Row
 export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
   exampleComponents: BoxComponent[] = [
-    {textComponent: {text: 'test test tekst', fontSize: 25}},
+    {textComponentInputs: {text: 'test test tekst', fontSize: 25}},
     {
-      imageComponent: {
+      imageComponentInputs: {
         imgSrc: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
         imgAlt: 'Clearing with high grass'
       }
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
       columns: [{
         columnRows: [{
           id: this.generateId(0, 0, 0),
-          component: [],
+          components: [],
         }]
       }]
     }]
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
   addRow(rowIndex: number): void {
     this.box.rows.splice(rowIndex, 0, {
       columns: [{
-        columnRows: [{id: this.generateId(0, 0, 0), component: []}]
+        columnRows: [{id: this.generateId(0, 0, 0), components: []}]
       }]
     });
     this.regenerateAllIds();
@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
       columnRows: [{
         id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-        component: []
+        components: []
       }]
     });
     this.regenerateAllIds();
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
   addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
       id: this.generateId(rowIndex, columnIndex, columnRowIndex),
-      component: []
+      components: []
     });
     this.regenerateAllIds();
   }
