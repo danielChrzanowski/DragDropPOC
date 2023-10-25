@@ -68,9 +68,10 @@ export class AppComponent implements OnInit {
         event.previousContainer.data[event.previousIndex];
     } else {
       const sourceCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.previousContainer.id);
+      this.layout.rows[sourceCoordinatesInBox.row].columns[sourceCoordinatesInBox.column].cells[sourceCoordinatesInBox.columnRow].presenter =
+        this.layout.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter;
       this.layout.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter =
         event.previousContainer.data;
-      delete this.layout.rows[sourceCoordinatesInBox.row].columns[sourceCoordinatesInBox.column].cells[sourceCoordinatesInBox.columnRow].presenter;
     }
   }
 

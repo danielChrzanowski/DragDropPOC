@@ -91,7 +91,7 @@
                [style]="getColumnRowHeightAsStyle(i, j, k)"
                cdkDropList
                class="row-in-column">
-            <div cdkDrag class="component">
+            <div *ngIf="rowInColumn.presenter" cdkDrag class="component">
               <div *cdkDragPlaceholder class="component-placeholder"></div>
               <app-component-selector [boxComponent]="rowInColumn.presenter"></app-component-selector>
             </div>
