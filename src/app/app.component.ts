@@ -9,10 +9,10 @@ import {
   ContentLayoutRow
 } from "./models";
 
-type CoordinatesInBox = {
+type CoordinatesInContentLayout = {
   row: number,
   column: number,
-  columnRow: number
+  cell: number
 }
 
 @Component({
@@ -21,7 +21,7 @@ type CoordinatesInBox = {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  componentsListId: string = 'components-list';
+  presentersListId: string = 'presenters-list';
   examplePresenters: ContentLayoutPresenter[] = [
     {
       presenterType: ContentLayoutPresenterType.TEXT_PRESENTER,
@@ -37,10 +37,10 @@ export class AppComponent implements OnInit {
     }
   ];
 
-  boxCoordinatesSeparator: string = '_';
-  boxCoordinateConnector: string = '-';
+  contentLayoutCoordinatesSeparator: string = '_';
+  contentLayoutCoordinateConnector: string = '-';
 
-  layout: ContentLayout = {
+  contentLayout: ContentLayout = {
     width: 600,
     height: 300,
     rows: [{
@@ -58,44 +58,44 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setBoxSize(this.layout.width, this.layout.height);
+    this.setContentLayoutSize(this.contentLayout.width, this.contentLayout.height);
   }
 
-  onBoxCellItemDrop(event: CdkDragDrop<ContentLayoutPresenter | undefined, any>): void {
-    const targetCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.container.id);
-    if (event.previousContainer.id === this.componentsListId) {
-      this.layout.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter =
+  onContentLayoutCellItemDrop(event: CdkDragDrop<ContentLayoutPresenter | undefined, any>): void {
+    const targetCoordinatesInContentLayout: CoordinatesInContentLayout = this.decodeCoordinatesInContentLayoutFromCellId(event.container.id);
+    if (event.previousContainer.id === this.presentersListId) {
+      this.contentLayout.rows[targetCoordinatesInContentLayout.row].columns[targetCoordinatesInContentLayout.column].cells[targetCoordinatesInContentLayout.cell].presenter =
         event.previousContainer.data[event.previousIndex];
     } else {
-      const sourceCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.previousContainer.id);
-      this.layout.rows[sourceCoordinatesInBox.row].columns[sourceCoordinatesInBox.column].cells[sourceCoordinatesInBox.columnRow].presenter =
-        this.layout.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter;
-      this.layout.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter =
+      const sourceCoordinatesInContentLayout: CoordinatesInContentLayout = this.decodeCoordinatesInContentLayoutFromCellId(event.previousContainer.id);
+      this.contentLayout.rows[sourceCoordinatesInContentLayout.row].columns[sourceCoordinatesInContentLayout.column].cells[sourceCoordinatesInContentLayout.cell].presenter =
+        this.contentLayout.rows[targetCoordinatesInContentLayout.row].columns[targetCoordinatesInContentLayout.column].cells[targetCoordinatesInContentLayout.cell].presenter;
+      this.contentLayout.rows[targetCoordinatesInContentLayout.row].columns[targetCoordinatesInContentLayout.column].cells[targetCoordinatesInContentLayout.cell].presenter =
         event.previousContainer.data;
     }
   }
 
   getAllListsConnections(): string[] {
-    const allColumnsIds: string[] = [];
-    this.layout.rows.forEach((row: ContentLayoutRow) =>
+    const allCellsIds: string[] = [];
+    this.contentLayout.rows.forEach((row: ContentLayoutRow) =>
       row.columns.forEach((column: ContentLayoutColumn) =>
-        column.cells.forEach((columnRow: ContentLayoutCell) =>
-          allColumnsIds.push(columnRow.id)))
+        column.cells.forEach((cell: ContentLayoutCell) =>
+          allCellsIds.push(cell.id)))
     );
-    return [this.componentsListId, ...allColumnsIds];
+    return [this.presentersListId, ...allCellsIds];
   }
 
-  setBoxSize(boxWidth: number, boxHeight: number): void {
-    this.layout.width = boxWidth;
-    this.layout.height = boxHeight;
+  setContentLayoutSize(boxWidth: number, boxHeight: number): void {
+    this.contentLayout.width = boxWidth;
+    this.contentLayout.height = boxHeight;
     this.renderer2.setProperty(this.elementRef.nativeElement,
       'style',
-      this.createSCSSVariablesString(this.layout.width, this.layout.height, this.layout.backgroundImage)
+      this.createSCSSVariablesString(this.contentLayout.width, this.contentLayout.height, this.contentLayout.backgroundImage)
     );
   }
 
   addRow(rowIndex: number): void {
-    this.layout.rows.splice(rowIndex, 0, {
+    this.contentLayout.rows.splice(rowIndex, 0, {
       columns: [{
         cells: [{id: this.generateId(0, 0, 0)}]
       }]
@@ -103,72 +103,72 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
-  addColumnInRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
-    this.layout.rows[rowIndex]?.columns.splice(columnIndex, 0, {
+  addColumnInRow(rowIndex: number, columnIndex: number, cellIndex: number): void {
+    this.contentLayout.rows[rowIndex]?.columns.splice(columnIndex, 0, {
       cells: [{
-        id: this.generateId(rowIndex, columnIndex, columnRowIndex)
+        id: this.generateId(rowIndex, columnIndex, cellIndex)
       }]
     });
     this.regenerateAllIds();
   }
 
-  addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
-    this.layout.rows[rowIndex]?.columns[columnIndex].cells.splice(columnRowIndex, 0, {
-      id: this.generateId(rowIndex, columnIndex, columnRowIndex)
+  addCell(rowIndex: number, columnIndex: number, cellIndex: number): void {
+    this.contentLayout.rows[rowIndex]?.columns[columnIndex].cells.splice(cellIndex, 0, {
+      id: this.generateId(rowIndex, columnIndex, cellIndex)
     });
     this.regenerateAllIds();
   }
 
   setRowHeight(rowIndex: number, height: number): void {
     let rowUndefinedHeightsCount: number = 0;
-    this.layout.rows.forEach((row: ContentLayoutRow) => {
-      if (rowUndefinedHeightsCount >= 1 || this.layout.rows[rowIndex].height) {
-        this.layout.rows[rowIndex].height = height;
+    this.contentLayout.rows.forEach((row: ContentLayoutRow) => {
+      if (rowUndefinedHeightsCount >= 1 || this.contentLayout.rows[rowIndex].height) {
+        this.contentLayout.rows[rowIndex].height = height;
         return;
       }
       if (!row.height) rowUndefinedHeightsCount += 1;
     });
   }
 
-  setRowColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
+  setColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
     let rowUndefinedColumnWidthsCount: number = 0;
-    this.layout.rows[rowIndex].columns.forEach((column: ContentLayoutColumn) => {
-      if (rowUndefinedColumnWidthsCount >= 1 || this.layout.rows[rowIndex].columns[columnIndex].width) {
-        this.layout.rows[rowIndex].columns[columnIndex].width = width;
+    this.contentLayout.rows[rowIndex].columns.forEach((column: ContentLayoutColumn) => {
+      if (rowUndefinedColumnWidthsCount >= 1 || this.contentLayout.rows[rowIndex].columns[columnIndex].width) {
+        this.contentLayout.rows[rowIndex].columns[columnIndex].width = width;
         return;
       }
       if (!column.width) rowUndefinedColumnWidthsCount += 1;
     });
   }
 
-  setColumnRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
+  setCellHeight(rowIndex: number, columnIndex: number, cellIndex: number, height: number): void {
     let columnUndefinedRowHeightCount: number = 0;
-    this.layout.rows[rowIndex].columns[columnIndex].cells.forEach((columnRow: ContentLayoutCell) => {
-      if (columnUndefinedRowHeightCount >= 1 || this.layout.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height) {
-        this.layout.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height = height;
+    this.contentLayout.rows[rowIndex].columns[columnIndex].cells.forEach((cell: ContentLayoutCell) => {
+      if (columnUndefinedRowHeightCount >= 1 || this.contentLayout.rows[rowIndex].columns[columnIndex].cells[cellIndex].height) {
+        this.contentLayout.rows[rowIndex].columns[columnIndex].cells[cellIndex].height = height;
         return;
       }
-      if (!columnRow.height) columnUndefinedRowHeightCount += 1;
+      if (!cell.height) columnUndefinedRowHeightCount += 1;
     });
   }
 
   getRowHeightAsStyle(rowIndex: number): string {
-    return this.layout.rows[rowIndex].height ? `flex: 0 0 ${this.layout.rows[rowIndex].height}px;` : '';
+    return this.contentLayout.rows[rowIndex].height ? `flex: 0 0 ${this.contentLayout.rows[rowIndex].height}px;` : '';
   }
 
   getColumnWidthAsStyle(rowIndex: number, columnIndex: number): string {
-    return this.layout.rows[rowIndex].columns[columnIndex].width ?
-      `flex: 0 0 ${this.layout.rows[rowIndex].columns[columnIndex].width}px;` : '';
+    return this.contentLayout.rows[rowIndex].columns[columnIndex].width ?
+      `flex: 0 0 ${this.contentLayout.rows[rowIndex].columns[columnIndex].width}px;` : '';
   }
 
-  getColumnRowHeightAsStyle(rowIndex: number, columnIndex: number, columnRowIndex: number): string {
-    return this.layout.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height ?
-      `flex: 0 0 ${this.layout.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height}px;` : '';
+  getCellHeightAsStyle(rowIndex: number, columnIndex: number, cellIndex: number): string {
+    return this.contentLayout.rows[rowIndex].columns[columnIndex].cells[cellIndex].height ?
+      `flex: 0 0 ${this.contentLayout.rows[rowIndex].columns[columnIndex].cells[cellIndex].height}px;` : '';
   }
 
   resetRowsHeights(): void {
-    this.layout.rows =
-      this.layout.rows.map((row: ContentLayoutRow) => {
+    this.contentLayout.rows =
+      this.contentLayout.rows.map((row: ContentLayoutRow) => {
         let updatedRow: ContentLayoutRow = row;
         updatedRow.height = undefined;
         return updatedRow;
@@ -176,46 +176,46 @@ export class AppComponent implements OnInit {
   }
 
   resetRowColumnsWidths(rowIndex: number): void {
-    this.layout.rows[rowIndex].columns = this.layout.rows[rowIndex].columns.map((column: ContentLayoutColumn) => {
+    this.contentLayout.rows[rowIndex].columns = this.contentLayout.rows[rowIndex].columns.map((column: ContentLayoutColumn) => {
       let updatedColumn: ContentLayoutColumn = column;
       updatedColumn.width = undefined;
       return updatedColumn;
     })
   }
 
-  resetColumnRowsHeights(rowIndex: number, columnIndex: number): void {
-    this.layout.rows[rowIndex].columns[columnIndex].cells =
-      this.layout.rows[rowIndex].columns[columnIndex].cells.map((columnRow: ContentLayoutCell) => {
-        let updatedColumnRow: ContentLayoutCell = columnRow;
-        updatedColumnRow.height = undefined;
-        return updatedColumnRow;
+  resetCellsHeights(rowIndex: number, columnIndex: number): void {
+    this.contentLayout.rows[rowIndex].columns[columnIndex].cells =
+      this.contentLayout.rows[rowIndex].columns[columnIndex].cells.map((cell: ContentLayoutCell) => {
+        let updatedCell: ContentLayoutCell = cell;
+        updatedCell.height = undefined;
+        return updatedCell;
       })
   }
 
   printBoxObjectToConsole(): void {
-    console.log("BOX:", this.layout);
+    console.log("BOX:", this.contentLayout);
   }
 
   applyBackgroundImage(backgroundImageURL: string): void {
-    this.layout.backgroundImage = backgroundImageURL;
+    this.contentLayout.backgroundImage = backgroundImageURL;
     this.renderer2.setProperty(this.elementRef.nativeElement,
       'style',
-      this.createSCSSVariablesString(this.layout.width, this.layout.height, backgroundImageURL)
+      this.createSCSSVariablesString(this.contentLayout.width, this.contentLayout.height, backgroundImageURL)
     );
   }
 
-  generateId(row: number, column: number, columnRow: number): string {
-    return `row${this.boxCoordinateConnector}${row}${this.boxCoordinatesSeparator}` +
-      `column${this.boxCoordinateConnector}${column}${this.boxCoordinatesSeparator}` +
-      `cell${this.boxCoordinateConnector}${columnRow}`;
+  generateId(row: number, column: number, cell: number): string {
+    return `row${this.contentLayoutCoordinateConnector}${row}${this.contentLayoutCoordinatesSeparator}` +
+      `column${this.contentLayoutCoordinateConnector}${column}${this.contentLayoutCoordinatesSeparator}` +
+      `cell${this.contentLayoutCoordinateConnector}${cell}`;
   }
 
-  decodeCoordinatesInBoxFromColumnRowId(columnRowId: string): { row: number, column: number, columnRow: number } {
-    const boxElements: string[] = columnRowId.split(this.boxCoordinatesSeparator);
-    const coordinatesAsString: string[] = boxElements.map((element: string) => element.split(this.boxCoordinateConnector)[1]);
-    const result: number[] = coordinatesAsString.map((element: string) => Number(element));
+  decodeCoordinatesInContentLayoutFromCellId(cellId: string): CoordinatesInContentLayout {
+    const cellSplittedCoordinates: string[] = cellId.split(this.contentLayoutCoordinatesSeparator);
+    const coordinatesAsString: string[] = cellSplittedCoordinates.map((element: string) => element.split(this.contentLayoutCoordinateConnector)[1]);
+    const resultCoordinates: number[] = coordinatesAsString.map((element: string) => Number(element));
 
-    return {row: result[0], column: result[1], columnRow: result[2]};
+    return {row: resultCoordinates[0], column: resultCoordinates[1], cell: resultCoordinates[2]};
   }
 
   private createSCSSVariablesString(boxWidth: number, boxHeight: number, backgroundImageURL: string | undefined): string {
@@ -224,10 +224,10 @@ export class AppComponent implements OnInit {
   }
 
   private regenerateAllIds(): void {
-    for (let i: number = 0; i < this.layout.rows.length; i += 1) {
-      for (let j: number = 0; j < this.layout.rows[i].columns.length; j += 1) {
-        for (let k: number = 0; k < this.layout.rows[i].columns[j].cells.length; k += 1) {
-          this.layout.rows[i].columns[j].cells[k].id = this.generateId(i, j, k);
+    for (let i: number = 0; i < this.contentLayout.rows.length; i += 1) {
+      for (let j: number = 0; j < this.contentLayout.rows[i].columns.length; j += 1) {
+        for (let k: number = 0; k < this.contentLayout.rows[i].columns[j].cells.length; k += 1) {
+          this.contentLayout.rows[i].columns[j].cells[k].id = this.generateId(i, j, k);
         }
       }
     }

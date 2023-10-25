@@ -1,0 +1,8 @@
+<ng-container [ngSwitch]="presenter?.presenterType">
+  <app-text-presenter-component *ngSwitchCase="ContentLayoutPresenterTypes.TEXT_PRESENTER"
+                                [textPresenterConfig]="presenter?.textPresenterConfig">
+  </app-text-presenter-component>
+  <app-image-presenter-component *ngSwitchCase="ContentLayoutPresenterTypes.IMAGE_PRESENTER"
+                                 [imagePresenterConfig]="presenter?.imagePresenterConfig">
+  </app-image-presenter-component>
+</ng-container>

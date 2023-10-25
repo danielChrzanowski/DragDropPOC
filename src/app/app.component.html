@@ -1,4 +1,4 @@
-<div class="content-container">
+<div class="container">
   <div>
     <!--________________OPTIONS________________-->
     <h3>options</h3>
@@ -14,9 +14,9 @@
     <br/><br/>
 
     <b>Zmiana wymiarów boxa:</b><br/>
-    Box width: <input #boxWidth [value]="layout.width" type="number"/><br/>
-    Box height: <input #boxHeight [value]="layout.height" type="number"/><br/>
-    <button (click)="setBoxSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
+    Box width: <input #boxWidth [value]="contentLayout.width" type="number"/><br/>
+    Box height: <input #boxHeight [value]="contentLayout.height" type="number"/><br/>
+    <button (click)="setContentLayoutSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
     <br/><br/>
 
     <b>Współrzędne miejsca, w którym dodajemy lub edytujemy element:</b><br/>
@@ -27,7 +27,7 @@
     <button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
       Add column in row
     </button>
-    <button (click)="addColumnRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
+    <button (click)="addCell(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
       Add row in column
     </button>
     <br/><br/>
@@ -35,7 +35,7 @@
     <b>Zmiana wymiarów DLA ZAZNACZONYCH INDEXÓW:</b><br/>
     <button (click)="resetRowsHeights()">Reset rows heights</button>
     <button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
-    <button (click)="resetColumnRowsHeights(Number(rowIndex.value), Number(columnIndex.value))">
+    <button (click)="resetCellsHeights(Number(rowIndex.value), Number(columnIndex.value))">
       Reset column rows heights
     </button>
     <br/>
@@ -44,11 +44,11 @@
     <button (click)="setRowHeight(Number(rowIndex.value), Number(rowHeight.value))">
       Set row height
     </button>
-    <button (click)="setRowColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
+    <button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
       Set row column width
     </button>
     <button
-      (click)="setColumnRowHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
+      (click)="setCellHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
       Set column row height
     </button>
     <br/><br/>
@@ -57,43 +57,43 @@
   </div>
 
   <div>
-    <!--________________COMPONENTS_LIST________________-->
-    <h3>{{componentsListId}}</h3>
-    <div class="components">
+    <!--________________PRESENTERS________________-->
+    <h3>{{presentersListId}}</h3>
+    <div class="presenters-list-wrapper">
       <div>
         <div [cdkDropListConnectedTo]="getAllListsConnections()"
              [cdkDropListData]="examplePresenters"
-             [id]="componentsListId"
+             [id]="presentersListId"
              cdkDropList
-             class="components-list">
-          <div *ngFor="let component of examplePresenters" cdkDrag class="component">
-            <div *cdkDragPlaceholder class="component-placeholder"></div>
-            <app-component-selector [boxComponent]="component"></app-component-selector>
+             class="presenters-list">
+          <div *ngFor="let presenter of examplePresenters" cdkDrag class="cell">
+            <div *cdkDragPlaceholder class="cell-placeholder"></div>
+            <app-presenter-selector [presenter]="presenter"></app-presenter-selector>
           </div>
         </div>
       </div>
     </div>
 
-    <!--________________BOX________________-->
-    <h3>box</h3>
-    <div class="box">
-      <div class="close-box-btn">X</div>
-      <div *ngFor="let row of layout.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
+    <!--________________CONTENT_LAYOUT________________-->
+    <h3>content-layout</h3>
+    <div class="content-layout">
+      <div class="close-content-btn">X</div>
+      <div *ngFor="let row of contentLayout.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
         <div *ngFor="let column of row.columns; let j = index"
              [id]="'column-' + j"
              [style]="getColumnWidthAsStyle(i, j)"
              class="column">
-          <div (cdkDropListDropped)="onBoxCellItemDrop($event)"
-               *ngFor="let rowInColumn of column.cells; let k = index"
+          <div (cdkDropListDropped)="onContentLayoutCellItemDrop($event)"
+               *ngFor="let cell of column.cells; let k = index"
                [cdkDropListConnectedTo]=" getAllListsConnections()"
-               [cdkDropListData]="rowInColumn.presenter"
-               [id]="rowInColumn.id"
-               [style]="getColumnRowHeightAsStyle(i, j, k)"
+               [cdkDropListData]="cell.presenter"
+               [id]="cell.id"
+               [style]="getCellHeightAsStyle(i, j, k)"
                cdkDropList
-               class="row-in-column">
-            <div *ngIf="rowInColumn.presenter" cdkDrag class="component">
-              <div *cdkDragPlaceholder class="component-placeholder"></div>
-              <app-component-selector [boxComponent]="rowInColumn.presenter"></app-component-selector>
+               class="cell">
+            <div *ngIf="cell.presenter" cdkDrag class="cell">
+              <div *cdkDragPlaceholder class="cell-placeholder"></div>
+              <app-presenter-selector [presenter]="cell.presenter"></app-presenter-selector>
             </div>
           </div>
         </div>

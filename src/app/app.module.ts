@@ -2,16 +2,16 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { TextComponent } from './components/text/text.component';
-import { ComponentSelectorComponent } from './utils/component-selector/component-selector.component';
-import { ImageComponent } from './components/image/image.component';
+import { TextPresenterComponent } from './presenters/text-presenter/text-presenter.component';
+import { PresenterSelectorComponent } from './utils/presenter-selector/presenter-selector.component';
+import { ImagePresenterComponent } from './presenters/image-presenter/image-presenter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TextComponent,
-    ComponentSelectorComponent,
-    ImageComponent
+    TextPresenterComponent,
+    PresenterSelectorComponent,
+    ImagePresenterComponent
   ],
   imports: [
     BrowserModule,
