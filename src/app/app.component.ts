@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Box, BoxComponent, Channel, Column, ColumnRow, ComponentType, ResolutionThreshold, Row, Type } from "./models";
+import { Box, Cell, Channel, Column, Presenter, PresenterType, ResolutionMode, Row, Type } from "./models";
 
 type CoordinatesInBox = {
   row: number,
@@ -15,16 +15,16 @@ type CoordinatesInBox = {
 })
 export class AppComponent implements OnInit {
   componentsListId: string = 'components-list';
-  exampleComponents: BoxComponent[] = [
+  exampleComponents: Presenter[] = [
     {
-      componentType: ComponentType.TextComponent,
-      textComponentInputs: {
+      presenterType: PresenterType.TextPresenter,
+      textPresenterConfig: {
         text: 'test test tekst'
       }
     },
     {
-      componentType: ComponentType.ImageComponent,
-      imageComponentInputs: {
+      presenterType: PresenterType.ImagePresenter,
+      imagePresenterConfig: {
         imgSrc: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
         imgAlt: 'Clearing with high grass'
       }
@@ -39,10 +39,10 @@ export class AppComponent implements OnInit {
     height: 300,
     type: Type.Banner,
     channel: Channel.WWW,
-    resolutionThreshold: ResolutionThreshold.Desktop,
+    resolutionMode: ResolutionMode.Desktop,
     rows: [{
       columns: [{
-        columnRows: [{
+        cells: [{
           id: this.generateId(0, 0, 0),
         }]
       }]
@@ -58,16 +58,16 @@ export class AppComponent implements OnInit {
     this.setBoxSize(this.box.width, this.box.height);
   }
 
-  onBoxCellItemDrop(event: CdkDragDrop<BoxComponent | undefined, any>): void {
+  onBoxCellItemDrop(event: CdkDragDrop<Presenter | undefined, any>): void {
     const targetCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.container.id);
     if (event.previousContainer.id === this.componentsListId) {
-      this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].columnRows[targetCoordinatesInBox.columnRow].component =
+      this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter =
         event.previousContainer.data[event.previousIndex];
     } else {
       const sourceCoordinatesInBox: CoordinatesInBox = this.decodeCoordinatesInBoxFromColumnRowId(event.previousContainer.id);
-      this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].columnRows[targetCoordinatesInBox.columnRow].component =
+      this.box.rows[targetCoordinatesInBox.row].columns[targetCoordinatesInBox.column].cells[targetCoordinatesInBox.columnRow].presenter =
         event.previousContainer.data;
-      delete this.box.rows[sourceCoordinatesInBox.row].columns[sourceCoordinatesInBox.column].columnRows[sourceCoordinatesInBox.columnRow].component;
+      delete this.box.rows[sourceCoordinatesInBox.row].columns[sourceCoordinatesInBox.column].cells[sourceCoordinatesInBox.columnRow].presenter;
     }
   }
 
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
     const allColumnsIds: string[] = [];
     this.box.rows.forEach((row: Row) =>
       row.columns.forEach((column: Column) =>
-        column.columnRows.forEach((columnRow: ColumnRow) =>
+        column.cells.forEach((columnRow: Cell) =>
           allColumnsIds.push(columnRow.id)))
     );
     return [this.componentsListId, ...allColumnsIds];
@@ -93,7 +93,7 @@ export class AppComponent implements OnInit {
   addRow(rowIndex: number): void {
     this.box.rows.splice(rowIndex, 0, {
       columns: [{
-        columnRows: [{id: this.generateId(0, 0, 0)}]
+        cells: [{id: this.generateId(0, 0, 0)}]
       }]
     });
     this.regenerateAllIds();
@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
 
   addColumnInRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
     this.box.rows[rowIndex]?.columns.splice(columnIndex, 0, {
-      columnRows: [{
+      cells: [{
         id: this.generateId(rowIndex, columnIndex, columnRowIndex)
       }]
     });
@@ -109,7 +109,7 @@ export class AppComponent implements OnInit {
   }
 
   addColumnRow(rowIndex: number, columnIndex: number, columnRowIndex: number): void {
-    this.box.rows[rowIndex]?.columns[columnIndex].columnRows.splice(columnRowIndex, 0, {
+    this.box.rows[rowIndex]?.columns[columnIndex].cells.splice(columnRowIndex, 0, {
       id: this.generateId(rowIndex, columnIndex, columnRowIndex)
     });
     this.regenerateAllIds();
@@ -139,9 +139,9 @@ export class AppComponent implements OnInit {
 
   setColumnRowHeight(rowIndex: number, columnIndex: number, columnRowIndex: number, height: number): void {
     let columnUndefinedRowHeightCount: number = 0;
-    this.box.rows[rowIndex].columns[columnIndex].columnRows.forEach((columnRow: ColumnRow) => {
-      if (columnUndefinedRowHeightCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height) {
-        this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height = height;
+    this.box.rows[rowIndex].columns[columnIndex].cells.forEach((columnRow: Cell) => {
+      if (columnUndefinedRowHeightCount >= 1 || this.box.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height) {
+        this.box.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height = height;
         return;
       }
       if (!columnRow.height) columnUndefinedRowHeightCount += 1;
@@ -158,8 +158,8 @@ export class AppComponent implements OnInit {
   }
 
   getColumnRowHeightAsStyle(rowIndex: number, columnIndex: number, columnRowIndex: number): string {
-    return this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height ?
-      `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].columnRows[columnRowIndex].height}px;` : '';
+    return this.box.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height ?
+      `flex: 0 0 ${this.box.rows[rowIndex].columns[columnIndex].cells[columnRowIndex].height}px;` : '';
   }
 
   resetRowsHeights(): void {
@@ -180,9 +180,9 @@ export class AppComponent implements OnInit {
   }
 
   resetColumnRowsHeights(rowIndex: number, columnIndex: number): void {
-    this.box.rows[rowIndex].columns[columnIndex].columnRows =
-      this.box.rows[rowIndex].columns[columnIndex].columnRows.map((columnRow: ColumnRow) => {
-        let updatedColumnRow: ColumnRow = columnRow;
+    this.box.rows[rowIndex].columns[columnIndex].cells =
+      this.box.rows[rowIndex].columns[columnIndex].cells.map((columnRow: Cell) => {
+        let updatedColumnRow: Cell = columnRow;
         updatedColumnRow.height = undefined;
         return updatedColumnRow;
       })
@@ -222,8 +222,8 @@ export class AppComponent implements OnInit {
   private regenerateAllIds(): void {
     for (let i: number = 0; i < this.box.rows.length; i += 1) {
       for (let j: number = 0; j < this.box.rows[i].columns.length; j += 1) {
-        for (let k: number = 0; k < this.box.rows[i].columns[j].columnRows.length; k += 1) {
-          this.box.rows[i].columns[j].columnRows[k].id = this.generateId(i, j, k);
+        for (let k: number = 0; k < this.box.rows[i].columns[j].cells.length; k += 1) {
+          this.box.rows[i].columns[j].cells[k].id = this.generateId(i, j, k);
         }
       }
     }

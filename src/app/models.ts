@@ -1,36 +1,10 @@
-/*
-  TODO:
-   Te enumy będą już w contentach w API chyba, ale chyba trzeba będzie je dać tutaj, bo libka będzie ich używała?
-   Albo stworzyć nowe API dla libki?
-*/
-export enum Type {
-  Banner,
-}
-
-export enum Channel {
-  WWW
-}
-
-export enum ResolutionThreshold { // Ten się pewnie inaczej nazywa?
-  Desktop,
-  Tablet,
-  Mobile
-}
-
-export enum ComponentType {
-  TextComponent,
-  ImageComponent
-}
-
-// ----------------------------------------------
-
 export type Box = {
   rows: Row[];
   width: number;
   height: number;
   type: Type;
   channel: Channel;
-  resolutionThreshold: ResolutionThreshold;
+  resolutionMode: ResolutionMode;
   backgroundImage?: string;
 }
 
@@ -40,29 +14,49 @@ export type Row = {
 }
 
 export type Column = {
-  columnRows: ColumnRow[];
+  cells: Cell[];
   width?: number;
 }
 
-export type ColumnRow = {
+export type Cell = {
   id: string;
-  component?: BoxComponent;
+  presenter?: Presenter;
   height?: number;
 }
 
-export type BoxComponent = {
-  componentType: ComponentType;
-  textComponentInputs?: TextComponentInputs;
-  imageComponentInputs?: ImageComponentInputs;
+export type Presenter = {
+  presenterType: PresenterType;
+  textPresenterConfig?: TextPresenterConfig;
+  imagePresenterConfig?: ImagePresenterConfig;
 }
 
-// Inputy BoxComponentu
-export type TextComponentInputs = {
+// Configi Presenterów
+export type TextPresenterConfig = {
   text: string;
 }
 
-export type ImageComponentInputs = {
+export type ImagePresenterConfig = {
   imgSrc: string;
   imgAlt: string;
 }
+
 // ------------------
+
+export enum Type {
+  Banner,
+}
+
+export enum Channel {
+  WWW
+}
+
+export enum ResolutionMode {
+  Desktop,
+  Tablet,
+  Mobile
+}
+
+export enum PresenterType {
+  TextPresenter,
+  ImagePresenter
+}

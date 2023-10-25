@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TextComponentInputs } from '../../models';
+import { TextPresenterConfig } from '../../models';
 
 @Component({
   selector: 'app-text-component',
@@ -8,5 +8,5 @@ import { TextComponentInputs } from '../../models';
 })
 export class TextComponent {
   @Input()
-  textComponentInputs?: TextComponentInputs;
+  textComponentInputs?: TextPresenterConfig;
 }

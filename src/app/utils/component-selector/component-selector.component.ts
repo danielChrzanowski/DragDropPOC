@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BoxComponent, ComponentType } from '../../models';
+import { Presenter, PresenterType } from '../../models';
 
 @Component({
   selector: 'app-component-selector',
@@ -8,7 +8,7 @@ import { BoxComponent, ComponentType } from '../../models';
 })
 export class ComponentSelectorComponent {
   @Input()
-  boxComponent?: BoxComponent;
+  boxComponent?: Presenter;
 
-  protected readonly ComponentTypes = ComponentType;
+  protected readonly ComponentTypes = PresenterType;
 }

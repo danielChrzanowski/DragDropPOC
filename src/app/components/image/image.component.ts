@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ImageComponentInputs } from '../../models';
+import { ImagePresenterConfig } from '../../models';
 
 @Component({
   selector: 'app-image-component',
@@ -8,5 +8,5 @@ import { ImageComponentInputs } from '../../models';
 })
 export class ImageComponent {
   @Input()
-  imageComponentInputs?: ImageComponentInputs;
+  imageComponentInputs?: ImagePresenterConfig;
 }
