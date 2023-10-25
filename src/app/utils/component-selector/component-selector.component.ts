@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Presenter, PresenterType } from '../../models';
+import { ContentLayoutPresenter, ContentLayoutPresenterType } from '../../models';
 
 @Component({
   selector: 'app-component-selector',
@@ -8,7 +8,7 @@ import { Presenter, PresenterType } from '../../models';
 })
 export class ComponentSelectorComponent {
   @Input()
-  boxComponent?: Presenter;
+  boxComponent?: ContentLayoutPresenter;
 
-  protected readonly ComponentTypes = PresenterType;
+  protected readonly ComponentTypes = ContentLayoutPresenterType;
 }

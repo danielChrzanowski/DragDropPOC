@@ -14,8 +14,8 @@
     <br/><br/>
 
     <b>Zmiana wymiarów boxa:</b><br/>
-    Box width: <input #boxWidth [value]="box.width" type="number"/><br/>
-    Box height: <input #boxHeight [value]="box.height" type="number"/><br/>
+    Box width: <input #boxWidth [value]="layout.width" type="number"/><br/>
+    Box height: <input #boxHeight [value]="layout.height" type="number"/><br/>
     <button (click)="setBoxSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
     <br/><br/>
 
@@ -62,11 +62,11 @@
     <div class="components">
       <div>
         <div [cdkDropListConnectedTo]="getAllListsConnections()"
-             [cdkDropListData]="exampleComponents"
+             [cdkDropListData]="examplePresenters"
              [id]="componentsListId"
              cdkDropList
              class="components-list">
-          <div *ngFor="let component of exampleComponents" cdkDrag class="component">
+          <div *ngFor="let component of examplePresenters" cdkDrag class="component">
             <div *cdkDragPlaceholder class="component-placeholder"></div>
             <app-component-selector [boxComponent]="component"></app-component-selector>
           </div>
@@ -78,7 +78,7 @@
     <h3>box</h3>
     <div class="box">
       <div class="close-box-btn">X</div>
-      <div *ngFor="let row of box.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
+      <div *ngFor="let row of layout.rows; let i = index" [style]="getRowHeightAsStyle(i)" class="row">
         <div *ngFor="let column of row.columns; let j = index"
              [id]="'column-' + j"
              [style]="getColumnWidthAsStyle(i, j)"

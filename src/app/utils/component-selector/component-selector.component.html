@@ -1,8 +1,8 @@
 <ng-container [ngSwitch]="boxComponent?.presenterType">
-  <app-text-component *ngSwitchCase="ComponentTypes.TextPresenter"
+  <app-text-component *ngSwitchCase="ComponentTypes.TEXT_PRESENTER"
                       [textComponentInputs]="boxComponent?.textPresenterConfig">
   </app-text-component>
-  <app-image-component *ngSwitchCase="ComponentTypes.ImagePresenter"
+  <app-image-component *ngSwitchCase="ComponentTypes.IMAGE_PRESENTER"
                        [imageComponentInputs]="boxComponent?.imagePresenterConfig">
   </app-image-component>
 </ng-container>

@@ -1,62 +1,42 @@
-export type Box = {
-  rows: Row[];
+export type ContentLayout = {
+  rows: ContentLayoutRow[];
   width: number;
   height: number;
-  type: Type;
-  channel: Channel;
-  resolutionMode: ResolutionMode;
   backgroundImage?: string;
 }
 
-export type Row = {
-  columns: Column[];
+export type ContentLayoutRow = {
+  columns: ContentLayoutColumn[];
   height?: number;
 }
 
-export type Column = {
-  cells: Cell[];
+export type ContentLayoutColumn = {
+  cells: ContentLayoutCell[];
   width?: number;
 }
 
-export type Cell = {
+export type ContentLayoutCell = {
   id: string;
-  presenter?: Presenter;
+  presenter?: ContentLayoutPresenter;
   height?: number;
 }
 
-export type Presenter = {
-  presenterType: PresenterType;
-  textPresenterConfig?: TextPresenterConfig;
-  imagePresenterConfig?: ImagePresenterConfig;
+export type ContentLayoutPresenter = {
+  presenterType: ContentLayoutPresenterType;
+  textPresenterConfig?: ContentLayoutTextPresenterConfig;
+  imagePresenterConfig?: ContentLayoutImagePresenterConfig;
 }
 
-// Configi Presenterów
-export type TextPresenterConfig = {
+// Presentery
+export enum ContentLayoutPresenterType {
+  TEXT_PRESENTER,
+  IMAGE_PRESENTER
+}
+
+export type ContentLayoutTextPresenterConfig = {
   text: string;
 }
 
-export type ImagePresenterConfig = {
-  imgSrc: string;
-  imgAlt: string;
-}
-
-// ------------------
-
-export enum Type {
-  Banner,
-}
-
-export enum Channel {
-  WWW
-}
-
-export enum ResolutionMode {
-  Desktop,
-  Tablet,
-  Mobile
-}
-
-export enum PresenterType {
-  TextPresenter,
-  ImagePresenter
+export type ContentLayoutImagePresenterConfig = {
+  imgName: string;
 }
