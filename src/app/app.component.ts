@@ -170,7 +170,7 @@ export class AppComponent implements OnInit {
     this.contentLayout.rows =
       this.contentLayout.rows.map((row: ContentLayoutRow) => {
         let updatedRow: ContentLayoutRow = row;
-        updatedRow.height = undefined;
+        delete updatedRow.height;
         return updatedRow;
       })
   }
@@ -178,7 +178,7 @@ export class AppComponent implements OnInit {
   resetRowColumnsWidths(rowIndex: number): void {
     this.contentLayout.rows[rowIndex].columns = this.contentLayout.rows[rowIndex].columns.map((column: ContentLayoutColumn) => {
       let updatedColumn: ContentLayoutColumn = column;
-      updatedColumn.width = undefined;
+      delete updatedColumn.width;
       return updatedColumn;
     })
   }
@@ -187,7 +187,7 @@ export class AppComponent implements OnInit {
     this.contentLayout.rows[rowIndex].columns[columnIndex].cells =
       this.contentLayout.rows[rowIndex].columns[columnIndex].cells.map((cell: ContentLayoutCell) => {
         let updatedCell: ContentLayoutCell = cell;
-        updatedCell.height = undefined;
+        delete updatedCell.height;
         return updatedCell;
       })
   }
