@@ -29,8 +29,8 @@ export type ContentLayoutPresenter = {
 
 // Presentery
 export enum ContentLayoutPresenterType {
-  TEXT_PRESENTER,
-  IMAGE_PRESENTER
+  TEXT_PRESENTER = 'TEXT_PRESENTER',
+  IMAGE_PRESENTER = 'IMAGE_PRESENTER'
 }
 
 export type ContentLayoutTextPresenterConfig = {
