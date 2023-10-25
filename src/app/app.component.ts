@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
     this.regenerateAllIds();
   }
 
-  addCell(rowIndex: number, columnIndex: number, cellIndex: number): void {
+  addCellInColumn(rowIndex: number, columnIndex: number, cellIndex: number): void {
     this.contentLayout.rows[rowIndex]?.columns[columnIndex].cells.splice(cellIndex, 0, {
       id: this.generateId(rowIndex, columnIndex, cellIndex)
     });
@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
+  setRowColumnWidth(rowIndex: number, columnIndex: number, width: number): void {
     let rowUndefinedColumnWidthsCount: number = 0;
     this.contentLayout.rows[rowIndex].columns.forEach((column: ContentLayoutColumn) => {
       if (rowUndefinedColumnWidthsCount >= 1 || this.contentLayout.rows[rowIndex].columns[columnIndex].width) {
@@ -141,7 +141,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setCellHeight(rowIndex: number, columnIndex: number, cellIndex: number, height: number): void {
+  setColumnCellHeight(rowIndex: number, columnIndex: number, cellIndex: number, height: number): void {
     let columnUndefinedRowHeightCount: number = 0;
     this.contentLayout.rows[rowIndex].columns[columnIndex].cells.forEach((cell: ContentLayoutCell) => {
       if (columnUndefinedRowHeightCount >= 1 || this.contentLayout.rows[rowIndex].columns[columnIndex].cells[cellIndex].height) {
@@ -183,7 +183,7 @@ export class AppComponent implements OnInit {
     })
   }
 
-  resetCellsHeights(rowIndex: number, columnIndex: number): void {
+  resetColumnCellsHeights(rowIndex: number, columnIndex: number): void {
     this.contentLayout.rows[rowIndex].columns[columnIndex].cells =
       this.contentLayout.rows[rowIndex].columns[columnIndex].cells.map((cell: ContentLayoutCell) => {
         let updatedCell: ContentLayoutCell = cell;
@@ -192,7 +192,7 @@ export class AppComponent implements OnInit {
       })
   }
 
-  printBoxObjectToConsole(): void {
+  printContentLayoutObjectToConsole(): void {
     console.log("BOX:", this.contentLayout);
   }
 

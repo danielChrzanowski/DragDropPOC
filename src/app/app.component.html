@@ -4,52 +4,54 @@
     <h3>options</h3>
     <b>
       1. Wiersze i kolumny są numerowane od 0.<br/>
-      2. Każdy wiersz składa się z kolumn, kolumny mają w sobie kolejne wiersze.<br/>
-      3. Można przeciągać elementy z listy komponentów na komórki w boxie.
+      2. Każdy wiersz składa się z kolumn, kolumny mają w sobie kolejne wiersze (komórka - cell).<br/>
+      3. Można przeciągać elementy z listy presenterów na komórki w content-layout.
       <div class="color-red">4. ZWRÓĆ UWAGĘ NA WYBRANE INDEXY!</div>
     </b>
     <br/>
 
-    <button (click)="printBoxObjectToConsole()" class="print-obj-to-console-btn">PRINT BOX OBJECT TO CONSOLE</button>
+    <button (click)="printContentLayoutObjectToConsole()" class="print-obj-to-console-btn">
+      PRINT CONTENT LAYOUT OBJECT TO CONSOLE
+    </button>
     <br/><br/>
 
-    <b>Zmiana wymiarów boxa:</b><br/>
-    Box width: <input #boxWidth [value]="contentLayout.width" type="number"/><br/>
-    Box height: <input #boxHeight [value]="contentLayout.height" type="number"/><br/>
-    <button (click)="setContentLayoutSize(Number(boxWidth.value), Number(boxHeight.value))">Apply box size</button>
+    <b>Zmiana wymiarów content-layout:</b><br/>
+    Layout width: <input #boxWidth [value]="contentLayout.width" type="number"/><br/>
+    Layout height: <input #boxHeight [value]="contentLayout.height" type="number"/><br/>
+    <button (click)="setContentLayoutSize(Number(boxWidth.value), Number(boxHeight.value))">Apply layout size</button>
     <br/><br/>
 
     <b>Współrzędne miejsca, w którym dodajemy lub edytujemy element:</b><br/>
     Row index: <input #rowIndex type="number" value="0"/><br/>
     Column index: <input #columnIndex type="number" value="0"/><br/>
-    Row in column index: <input #columnRowIndex type="number" value="0"/><br/>
+    Cell index: <input #cellIndex type="number" value="0"/><br/>
     <button (click)="addRow(Number(rowIndex.value))">Add row</button>
-    <button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
+    <button (click)="addColumnInRow(Number(rowIndex.value), Number(columnIndex.value), Number(cellIndex.value))">
       Add column in row
     </button>
-    <button (click)="addCell(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value))">
-      Add row in column
+    <button (click)="addCellInColumn(Number(rowIndex.value), Number(columnIndex.value), Number(cellIndex.value))">
+      Add cell in column
     </button>
     <br/><br/>
 
     <b>Zmiana wymiarów DLA ZAZNACZONYCH INDEXÓW:</b><br/>
     <button (click)="resetRowsHeights()">Reset rows heights</button>
     <button (click)="resetRowColumnsWidths(Number(rowIndex.value))">Reset row columns widths</button>
-    <button (click)="resetCellsHeights(Number(rowIndex.value), Number(columnIndex.value))">
-      Reset column rows heights
+    <button (click)="resetColumnCellsHeights(Number(rowIndex.value), Number(columnIndex.value))">
+      Reset column cells heights
     </button>
     <br/>
-    Column width: <input #columnWidth type="number" value="30"/>px<br/>
-    Row height: <input #rowHeight type="number" value="30"/>px<br/>
-    <button (click)="setRowHeight(Number(rowIndex.value), Number(rowHeight.value))">
+    Width/height: <input #columnWidthOrHeight type="number" value="30"/>px<br/>
+    <button (click)="setRowHeight(Number(rowIndex.value), Number(columnWidthOrHeight.value))">
       Set row height
     </button>
-    <button (click)="setColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidth.value))">
+    <button
+      (click)="setRowColumnWidth(Number(rowIndex.value), Number(columnIndex.value), Number(columnWidthOrHeight.value))">
       Set row column width
     </button>
     <button
-      (click)="setCellHeight(Number(rowIndex.value), Number(columnIndex.value), Number(columnRowIndex.value), Number(rowHeight.value))">
-      Set column row height
+      (click)="setColumnCellHeight(Number(rowIndex.value), Number(columnIndex.value), Number(cellIndex.value), Number(columnWidthOrHeight.value))">
+      Set column cell height
     </button>
     <br/><br/>
     Background image URL: <input #backgroundImageURL/>
