@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   ContentLayout,
@@ -56,9 +56,6 @@ export class AppComponent implements OnInit {
 
   protected readonly Number: NumberConstructor = Number;
 
-  constructor(private renderer2: Renderer2, private elementRef: ElementRef) {
-  }
-
   ngOnInit(): void {
     this.setContentLayoutSize(this.contentLayout.width, this.contentLayout.height);
   }
@@ -85,15 +82,6 @@ export class AppComponent implements OnInit {
           allCellsIds.push(cell.id)))
     );
     return [this.presentersListId, ...allCellsIds];
-  }
-
-  setContentLayoutSize(boxWidth: number, boxHeight: number): void {
-    this.contentLayout.width = boxWidth;
-    this.contentLayout.height = boxHeight;
-    this.renderer2.setProperty(this.elementRef.nativeElement,
-      'style',
-      this.createSCSSVariablesString(this.contentLayout.width, this.contentLayout.height, this.contentLayout.backgroundImage)
-    );
   }
 
   addRow(rowIndex: number): void {
@@ -209,10 +197,8 @@ export class AppComponent implements OnInit {
 
   applyBackgroundImage(backgroundImageURL: string): void {
     this.contentLayout.backgroundImage = backgroundImageURL;
-    this.renderer2.setProperty(this.elementRef.nativeElement,
-      'style',
-      this.createSCSSVariablesString(this.contentLayout.width, this.contentLayout.height, backgroundImageURL)
-    );
+    console.log(this.contentLayout.backgroundImage)
+    this.setBackgroundImage(this.contentLayout.backgroundImage);
   }
 
   generateId(row: number, column: number, cell: number): string {
@@ -229,9 +215,31 @@ export class AppComponent implements OnInit {
     return {row: resultCoordinates[0], column: resultCoordinates[1], cell: resultCoordinates[2]};
   }
 
-  private createSCSSVariablesString(boxWidth: number, boxHeight: number, backgroundImageURL: string | undefined): string {
-    let resultString: string = `--box-width: ${boxWidth}px; --box-height: ${boxHeight}px;`;
-    return backgroundImageURL ? resultString + `--background-image: url(${backgroundImageURL});` : resultString;
+  setContentLayoutSize(boxWidth: number, boxHeight: number): void {
+    this.contentLayout.width = boxWidth;
+    this.contentLayout.height = boxHeight;
+
+    this.updateSCSSVariable(
+      '--layout-width',
+      `${this.contentLayout.width.toString()}px`
+    );
+    this.updateSCSSVariable(
+      '--layout-height',
+      `${this.contentLayout.height.toString()}px`
+    );
+  }
+
+  setBackgroundImage(backgroundImage: string): void {
+    this.contentLayout.backgroundImage = backgroundImage;
+
+    this.updateSCSSVariable(
+      '--background-image',
+      `url(${this.contentLayout.backgroundImage})`
+    );
+  }
+
+  private updateSCSSVariable(name: string, value: string): void {
+    document.documentElement.style.setProperty(name, value);
   }
 
   private regenerateAllIds(): void {

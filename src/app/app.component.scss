@@ -1,6 +1,6 @@
 .container {
-  $boxWidth: var(--box-width);
-  $boxHeight: var(--box-height);
+  $layoutWidth: var(--layout-width);
+  $layoutHeight: var(--layout-height);
   $backgroundImage: var(--background-image);
 
   display: flex;
@@ -10,8 +10,8 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    width: $boxWidth;
-    height: $boxHeight;
+    width: $layoutWidth;
+    height: $layoutHeight;
     background-image: $backgroundImage;
     background-size: 100% 100%;
 
