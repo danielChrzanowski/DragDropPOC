@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   ContentLayout,
@@ -55,6 +55,9 @@ export class AppComponent implements OnInit {
   }
 
   protected readonly Number: NumberConstructor = Number;
+
+  constructor(private elementRef: ElementRef) {
+  }
 
   ngOnInit(): void {
     this.setContentLayoutSize(this.contentLayout.width, this.contentLayout.height);
@@ -242,7 +245,7 @@ export class AppComponent implements OnInit {
   }
 
   private updateSCSSVariable(name: string, value: string): void {
-    document.documentElement.style.setProperty(name, value);
+    this.elementRef.nativeElement.style.setProperty(name, value);
   }
 
   private regenerateAllIds(): void {
