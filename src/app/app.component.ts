@@ -6,7 +6,8 @@ import {
   ContentLayoutColumn,
   ContentLayoutPresenter,
   ContentLayoutPresenterType,
-  ContentLayoutRow
+  ContentLayoutRow,
+  ContentTemplate
 } from "./models";
 
 type CoordinatesInContentLayout = {
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
       textPresenterConfig: {
         text: 'test test tekst'
       }
+
     },
     {
       presenterType: ContentLayoutPresenterType.IMAGE_PRESENTER,
@@ -193,7 +195,15 @@ export class AppComponent implements OnInit {
   }
 
   printContentLayoutObjectToConsole(): void {
-    console.log("BOX:", this.contentLayout);
+    console.log("CONTENT_LAYOUT:", this.contentLayout);
+  }
+
+  printContentTemplateObjectToConsole(): void {
+    const contentTemplate: ContentTemplate = {
+      imgName: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+      layout: this.contentLayout
+    }
+    console.log("CONTENT_TEMPLATE:", contentTemplate);
   }
 
   applyBackgroundImage(backgroundImageURL: string): void {

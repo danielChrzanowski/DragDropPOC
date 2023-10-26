@@ -40,3 +40,9 @@ export type ContentLayoutTextPresenterConfig = {
 export type ContentLayoutImagePresenterConfig = {
   imgName: string;
 }
+
+// Template model
+export type ContentTemplate = {
+  imgName: string;
+  layout: ContentLayout;
+}
