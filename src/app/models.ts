@@ -43,6 +43,7 @@ export type ContentLayoutImagePresenterConfig = {
 
 // Template model
 export type ContentTemplate = {
+  templateName: string;
   imgName: string;
   layout: ContentLayout;
 }
