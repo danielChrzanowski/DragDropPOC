@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.setContentLayoutSize(this.contentLayout.width, this.contentLayout.height);
+    this.setBackgroundImage(this.contentLayout.backgroundImage);
   }
 
   onContentLayoutCellItemDrop(event: CdkDragDrop<ContentLayoutPresenter | undefined, any>): void {
@@ -229,13 +230,15 @@ export class AppComponent implements OnInit {
     );
   }
 
-  setBackgroundImage(backgroundImage: string): void {
-    this.contentLayout.backgroundImage = backgroundImage;
+  setBackgroundImage(backgroundImage?: string): void {
+    if (backgroundImage) {
+      this.contentLayout.backgroundImage = backgroundImage;
 
-    this.updateSCSSVariable(
-      '--background-image',
-      `url(${this.contentLayout.backgroundImage})`
-    );
+      this.updateSCSSVariable(
+        '--background-image',
+        `url(${this.contentLayout.backgroundImage})`
+      );
+    }
   }
 
   private updateSCSSVariable(name: string, value: string): void {
