@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     {
       presenterType: ContentLayoutPresenterType.IMAGE_PRESENTER,
       imagePresenterConfig: {
-        imgName: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg'
+        imgName: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSYqu1WVx_8aJ5C8yx-6f3ORH3x2042g0vY6GF5bUGBi-AF1DmRyV_igqitHiyHWO8jek&usqp=CAU'
       }
     }
   ];
