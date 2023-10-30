@@ -3,8 +3,7 @@ import { ContentLayoutPresenter, ContentLayoutPresenterType } from '../../models
 
 @Component({
   selector: 'app-presenter-selector',
-  templateUrl: './presenter-selector.component.html',
-  styleUrls: ['./presenter-selector.component.scss']
+  templateUrl: './presenter-selector.component.html'
 })
 export class PresenterSelectorComponent {
   @Input()
